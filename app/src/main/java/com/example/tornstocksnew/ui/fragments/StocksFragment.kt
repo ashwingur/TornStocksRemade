@@ -8,6 +8,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
+import com.example.tornstocksnew.ui.activities.MainActivity
 
 
 //@AndroidEntryPoint
@@ -44,5 +45,10 @@ class StocksFragment : Fragment() {
         (view.parent as? ViewGroup)?.doOnPreDraw {
             startPostponedEnterTransition()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).updateBottomNav()
     }
 }

@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.databinding.FragmentSettingsBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
+import com.example.tornstocksnew.ui.activities.MainActivity
 
 
 //@AndroidEntryPoint
@@ -46,4 +48,11 @@ class SettingsFragment : Fragment() {
             startPostponedEnterTransition()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).updateBottomNav()
+    }
+
+
 }

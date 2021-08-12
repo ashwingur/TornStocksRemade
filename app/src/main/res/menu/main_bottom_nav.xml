@@ -5,7 +5,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_stocks"
         android:id="@+id/stocks_menu"
-        android:title="@string/stocks" />
+        android:title="@string/stocks"/>
     <item android:title="@string/triggers"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_notification_important_24"

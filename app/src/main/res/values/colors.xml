@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_green">#046b00</color>
     <color name="very_dark_green">#034d00</color>
+    <color name="blue_black">#000129</color>
+    <color name="fragment_bg">#FFF</color>
 </resources>

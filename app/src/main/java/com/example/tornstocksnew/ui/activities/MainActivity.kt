@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment: NavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         bottomNavView = findViewById(R.id.bottom_nav)
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNav() {
+        // Slide left or right depending on the current selected bottom nav menu item
         val navOptionsToLeft = NavOptions
             .Builder()
             .setEnterAnim(R.anim.left_to_right)
@@ -47,28 +49,27 @@ class MainActivity : AppCompatActivity() {
         bottomNavView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.stocks_menu -> {
-                    if (navController.currentDestination?.id != R.id.stocksFragment){
-                        navController.navigate(R.id.stocksFragment,null, navOptionsToLeft)
+                    if (navController.currentDestination?.id != R.id.stocksFragment) {
+                        navController.navigate(R.id.stocksFragment, null, navOptionsToLeft)
                     }
-
                 }
                 R.id.triggers_menu -> {
                     if (navController.currentDestination?.id == R.id.stocksFragment) {
                         navController.navigate(R.id.triggersFragment, null, navOptionsToRight)
-                    } else if (navController.currentDestination?.id != R.id.triggersFragment){
+                    } else if (navController.currentDestination?.id != R.id.triggersFragment) {
                         navController.navigate(R.id.triggersFragment, null, navOptionsToLeft)
                     }
                 }
                 R.id.user_menu -> {
                     if (navController.currentDestination?.id == R.id.settingsFragment) {
                         navController.navigate(R.id.userFragment, null, navOptionsToLeft)
-                    } else if (navController.currentDestination?.id != R.id.userFragment){
+                    } else if (navController.currentDestination?.id != R.id.userFragment) {
                         navController.navigate(R.id.userFragment, null, navOptionsToRight)
                     }
                 }
                 R.id.settings_menu -> {
-                    if (navController.currentDestination?.id != R.id.settingsFragment){
-                        navController.navigate(R.id.settingsFragment,  null, navOptionsToRight)
+                    if (navController.currentDestination?.id != R.id.settingsFragment) {
+                        navController.navigate(R.id.settingsFragment, null, navOptionsToRight)
                     }
                 }
             }
@@ -76,4 +77,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun updateBottomNav() {
+        when (navController.currentDestination?.id) {
+            R.id.stocksFragment -> {
+                bottomNavView.selectedItemId = R.id.stocks_menu
+            }
+            R.id.triggersFragment -> {
+                bottomNavView.selectedItemId = R.id.triggers_menu
+            }
+            R.id.userFragment -> {
+                bottomNavView.selectedItemId = R.id.user_menu
+            }
+            R.id.settingsFragment -> {
+                bottomNavView.selectedItemId = R.id.settings_menu
+            }
+        }
+    }
 }
