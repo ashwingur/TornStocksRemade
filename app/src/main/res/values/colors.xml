@@ -13,4 +13,5 @@
     <color name="fragment_bg">#FFF</color>
     <color name="text_primary">#000000</color>
     <color name="text_error">#ba0909</color>
+    <color name="settings_line">#ebebeb</color>
 </resources>
