@@ -52,9 +52,10 @@ class StocksFragment : Fragment() {
         stockViewModel.getStocks(Constants.TEST_API).observe(requireActivity(), Observer {
             when (it.status){
                 Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(requireContext(), "${it.data}", Toast.LENGTH_SHORT).show()
                 }
-                Status.LOADING -> {}
+                Status.LOADING -> { binding.progressBar.visibility = View.VISIBLE }
                 Status.ERROR -> {
                     Log.d(TAG, "printStockData: ${it.message}")
                 }
