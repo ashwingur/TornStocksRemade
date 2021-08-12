@@ -1,6 +1,7 @@
 package com.example.tornstocksnew.models
 
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -12,4 +13,12 @@ data class Stock(
     val market_cap: Long,
     val total_shares: Long,
     val benefit: Benefit
-) : Parcelable
+) : Parcelable {
+
+    companion object {
+        val PriceDescendingComparator = Comparator<Stock> { s1, s2 ->
+            (s2.current_price - s1.current_price).toInt()
+        }
+    }
+
+}

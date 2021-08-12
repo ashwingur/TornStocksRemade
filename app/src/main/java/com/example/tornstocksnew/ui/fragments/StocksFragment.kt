@@ -1,6 +1,8 @@
 package com.streamplate.streamplateandroidapp.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,7 @@ import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.Status
 import com.example.tornstocksnew.viewmodels.StocksViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -31,8 +34,8 @@ class StocksFragment : Fragment() {
     private val stockViewModel: StocksViewModel by viewModels()
     private lateinit var adapter: StocksListAdapter
     private var cachedStocks: MutableList<Stock> = mutableListOf()
-    private val CACHED_STOCKS = "CACHED_STOCKS"
-    private var response: StocksResponseObject? = null
+
+    private val STOCK_UPDATE_DELAY = 60000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +57,20 @@ class StocksFragment : Fragment() {
         startAnimation(view)
 
         setupRecyclerView()
-        getStockData()
+        setupPeriodicApiCall()
+    }
+
+    private fun setupPeriodicApiCall() {
+        val mainHandler = Handler(Looper.getMainLooper())
+        mainHandler.post(object: Runnable {
+            override fun run() {
+                getStockData()
+                mainHandler.postDelayed(this, STOCK_UPDATE_DELAY)
+            }
+        })
     }
 
     private fun setupRecyclerView() {
-
         adapter = StocksListAdapter((activity as MainActivity).cachedStocks , requireContext())
         binding.stocksRv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -69,7 +81,7 @@ class StocksFragment : Fragment() {
         stockViewModel.getStocks(Constants.TEST_API).observe(requireActivity(), Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-                    response = it.data
+                    val response: StocksResponseObject? = it.data
                     binding.progressBar.visibility = View.GONE
                     if (it.data?.error != null) {
                         Toast.makeText(
@@ -80,6 +92,7 @@ class StocksFragment : Fragment() {
                         binding.errorTv.visibility = View.VISIBLE
                     } else {
                         cachedStocks = it.data?.stocks?.values?.toMutableList()!!
+                        Collections.sort(cachedStocks, Stock.PriceDescendingComparator)
                         binding.errorTv.visibility = View.GONE
                         adapter.updateStocks(cachedStocks)
                     }
@@ -113,7 +126,6 @@ class StocksFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         (activity as MainActivity).cachedStocks = cachedStocks
-        Toast.makeText(requireContext(), "Paused", Toast.LENGTH_SHORT).show()
     }
 
 }

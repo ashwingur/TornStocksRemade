@@ -3,12 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.recyclerview.widget.RecyclerView
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/stocks_rv"
-        tools:listitem="@layout/stocks_list_item"
-        android:paddingTop="4dp"/>
+        android:fillViewport="true">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/stocks_rv"
+            tools:listitem="@layout/stocks_list_item"
+            android:paddingTop="4dp"/>
+    </androidx.core.widget.NestedScrollView>
+
 
     <ProgressBar
         android:layout_width="wrap_content"
