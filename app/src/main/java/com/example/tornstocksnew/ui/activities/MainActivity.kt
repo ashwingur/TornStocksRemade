@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.tornstocksnew.R
+import com.example.tornstocksnew.models.Stock
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var navController: NavController
     private lateinit var bottomNavView: BottomNavigationView
+    var cachedStocks: MutableList<Stock> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

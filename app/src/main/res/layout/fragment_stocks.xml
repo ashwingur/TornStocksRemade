@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/stocks_rv"
+        tools:listitem="@layout/stocks_list_item"
+        android:paddingTop="4dp"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:id="@+id/progress_bar"/>
+        android:visibility="visible"
+        android:id="@+id/progress_bar"
+        android:background="@android:color/transparent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/stocks_rv"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:id="@+id/error_tv"
+        android:textColor="@color/text_error"
+        android:text="@string/unable_to_retrieve_stock_data"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:textSize="20sp"
+        android:visibility="gone"/>
 
 </RelativeLayout>

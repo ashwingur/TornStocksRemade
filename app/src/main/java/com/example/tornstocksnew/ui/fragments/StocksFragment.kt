@@ -10,8 +10,12 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
+import com.example.tornstocksnew.adapters.StocksListAdapter
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
+import com.example.tornstocksnew.models.Stock
+import com.example.tornstocksnew.models.StocksResponseObject
 import com.example.tornstocksnew.ui.activities.MainActivity
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.Status
@@ -25,10 +29,14 @@ class StocksFragment : Fragment() {
 
     private lateinit var binding: FragmentStocksBinding
     private val stockViewModel: StocksViewModel by viewModels()
+    private lateinit var adapter: StocksListAdapter
+    private var cachedStocks: MutableList<Stock> = mutableListOf()
+    private val CACHED_STOCKS = "CACHED_STOCKS"
+    private var response: StocksResponseObject? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val inflater = TransitionInflater.from(requireContext())
+        TransitionInflater.from(requireContext())
     }
 
     override fun onCreateView(
@@ -45,19 +53,47 @@ class StocksFragment : Fragment() {
         postponeEnterTransition()
         startAnimation(view)
 
-        printStockData()
+        setupRecyclerView()
+        getStockData()
     }
 
-    private fun printStockData() {
+    private fun setupRecyclerView() {
+
+        adapter = StocksListAdapter((activity as MainActivity).cachedStocks , requireContext())
+        binding.stocksRv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.stocksRv.adapter = adapter
+    }
+
+    private fun getStockData() {
         stockViewModel.getStocks(Constants.TEST_API).observe(requireActivity(), Observer {
-            when (it.status){
+            when (it.status) {
                 Status.SUCCESS -> {
+                    response = it.data
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), "${it.data}", Toast.LENGTH_SHORT).show()
+                    if (it.data?.error != null) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Torn API error ${response?.error?.code}: ${response?.error?.warning}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.errorTv.visibility = View.VISIBLE
+                    } else {
+                        cachedStocks = it.data?.stocks?.values?.toMutableList()!!
+                        binding.errorTv.visibility = View.GONE
+                        adapter.updateStocks(cachedStocks)
+                    }
                 }
-                Status.LOADING -> { binding.progressBar.visibility = View.VISIBLE }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
                 Status.ERROR -> {
                     Log.d(TAG, "printStockData: ${it.message}")
+                    Toast.makeText(
+                        requireContext(),
+                        "Error retrieving stock data: ${it.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
@@ -73,4 +109,11 @@ class StocksFragment : Fragment() {
         super.onResume()
         (activity as MainActivity).updateBottomNav()
     }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).cachedStocks = cachedStocks
+        Toast.makeText(requireContext(), "Paused", Toast.LENGTH_SHORT).show()
+    }
+
 }

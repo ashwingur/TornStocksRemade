@@ -4,4 +4,8 @@
     <string name="triggers">Triggers</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
+    <string name="aaa">AAA</string>
+    <string name="_000">$000</string>
+    <string name="stock_name_here">Stock Name Here</string>
+    <string name="unable_to_retrieve_stock_data">Unable to retrieve stock data</string>
 </resources>
