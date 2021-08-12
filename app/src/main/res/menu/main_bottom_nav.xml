@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:enabled="true"
+        android:icon="@drawable/ic_stocks"
+        android:id="@+id/stocks_menu"
+        android:title="@string/stocks" />
+    <item android:title="@string/triggers"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_notification_important_24"
+        android:id="@+id/triggers_menu"/>
+    <item android:title="@string/profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:id="@+id/user_menu"/>
+    <item android:title="@string/settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:id="@+id/settings_menu"/>
+</menu>

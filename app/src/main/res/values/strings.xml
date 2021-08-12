@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TornStocks</string>
+    <string name="app_name">TornStocks2.0</string>
+    <string name="stocks">Stocks</string>
+    <string name="triggers">Triggers</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
 </resources>

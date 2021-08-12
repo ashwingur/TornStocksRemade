@@ -1,4 +1,4 @@
-package com.example.tornstocks
+package com.example.tornstocksnew
 
 import org.junit.Test
 
