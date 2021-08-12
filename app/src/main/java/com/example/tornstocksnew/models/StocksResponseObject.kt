@@ -1,4 +1,6 @@
 package com.example.tornstocksnew.models
 
-class StocksResponseObject {
-}
+data class StocksResponseObject(
+    val stocks: Map<String, Stock>,
+    val error: Error
+)
