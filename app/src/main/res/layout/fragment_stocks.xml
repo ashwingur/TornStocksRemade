@@ -4,24 +4,18 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/stocks_rv"
-            tools:listitem="@layout/stocks_list_item"
-            android:paddingTop="4dp"/>
-    </androidx.core.widget.NestedScrollView>
+            tools:listitem="@layout/stocks_list_item" />
 
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/progress_bar"
         android:background="@android:color/transparent"/>
 

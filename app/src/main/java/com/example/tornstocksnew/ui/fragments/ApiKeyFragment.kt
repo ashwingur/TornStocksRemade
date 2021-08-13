@@ -8,24 +8,28 @@ import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.R
+import com.example.tornstocksnew.databinding.FragmentApiKeyBinding
 import com.example.tornstocksnew.databinding.FragmentSettingsBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
+import com.example.tornstocksnew.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
 
-//@AndroidEntryPoint
-class SettingsFragment : Fragment() {
+@AndroidEntryPoint
+class ApiKeyFragment : Fragment() {
 
-    private lateinit var binding: FragmentSettingsBinding
+    private lateinit var binding: FragmentApiKeyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
-//        enterTransition = inflater.inflateTransition(R.transition.slide)
-//        exitTransition = inflater.inflateTransition(R.transition.fade)
-//        (activity as VenueProfileActivity).hideBottomNav(true)
+        enterTransition = inflater.inflateTransition(R.transition.slide)
+        exitTransition = inflater.inflateTransition(R.transition.slide)
+        (activity as MainActivity).hideBottomNav(true)
     }
 
     override fun onCreateView(
@@ -33,9 +37,9 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        //(activity as NewMainActivity).setSupportActionBar(binding.toolbar)
-        //NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+        binding = FragmentApiKeyBinding.inflate(inflater, container, false)
+        (activity as MainActivity).setSupportActionBar(binding.toolbar)
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         return binding.root
     }
 
@@ -45,9 +49,11 @@ class SettingsFragment : Fragment() {
         startAnimation(view)
 
         binding.apply {
-            settingsApiKey.setOnClickListener {
-                findNavController().navigate(R.id.action_settingsFragment_to_apiKeyFragment)
+            saveBtn.setOnClickListener {
+                (activity as MainActivity).mainViewModel.saveApiKey(apiKeyEt.text.toString())
+                Toast.makeText(requireContext(), "Api key saved", Toast.LENGTH_SHORT).show()
             }
+            apiKeyEt.setText(Constants.API_KEY)
         }
     }
 
@@ -59,11 +65,10 @@ class SettingsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity).apply {
-            updateBottomNav()
-            hideBottomNav(false)
-        }
+        (activity as MainActivity).updateBottomNav()
     }
+
+
 
 
 }

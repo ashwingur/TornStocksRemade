@@ -78,38 +78,42 @@ class StocksFragment : Fragment() {
     }
 
     private fun getStockData() {
-        stockViewModel.getStocks(Constants.TEST_API).observe(requireActivity(), Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    val response: StocksResponseObject? = it.data
-                    binding.progressBar.visibility = View.GONE
-                    if (it.data?.error != null) {
+        Constants.API_KEY?.let {
+            stockViewModel.getStocks(it).observe(requireActivity(), Observer {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        val response: StocksResponseObject? = it.data
+                        binding.progressBar.visibility = View.GONE
+                        if (it.data?.error != null) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Torn API error ${response?.error?.code}: ${response?.error?.warning}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            binding.errorTv.visibility = View.VISIBLE
+                        } else {
+                            cachedStocks = it.data?.stocks?.values?.toMutableList()!!
+                            Collections.sort(cachedStocks, Stock.PriceDescendingComparator)
+                            binding.errorTv.visibility = View.GONE
+                            adapter.updateStocks(cachedStocks)
+                        }
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    Status.ERROR -> {
+                        Log.d(TAG, "printStockData: ${it.message}")
                         Toast.makeText(
                             requireContext(),
-                            "Torn API error ${response?.error?.code}: ${response?.error?.warning}",
+                            "Error retrieving stock data: ${it.message}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        binding.errorTv.visibility = View.VISIBLE
-                    } else {
-                        cachedStocks = it.data?.stocks?.values?.toMutableList()!!
-                        Collections.sort(cachedStocks, Stock.PriceDescendingComparator)
-                        binding.errorTv.visibility = View.GONE
-                        adapter.updateStocks(cachedStocks)
                     }
                 }
-                Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                Status.ERROR -> {
-                    Log.d(TAG, "printStockData: ${it.message}")
-                    Toast.makeText(
-                        requireContext(),
-                        "Error retrieving stock data: ${it.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        })
+            })
+        } ?: kotlin.run {
+            Toast.makeText(requireContext(), "Enter an Api key in settings", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun startAnimation(view: View) {

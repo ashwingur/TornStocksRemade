@@ -10,4 +10,5 @@
     <string name="unable_to_retrieve_stock_data">Unable to retrieve stock data</string>
     <string name="api_key">Api Key</string>
     <string name="help">Help</string>
+    <string name="save">Save</string>
 </resources>

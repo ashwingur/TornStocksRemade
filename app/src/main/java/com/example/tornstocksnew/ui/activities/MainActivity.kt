@@ -1,34 +1,47 @@
 package com.example.tornstocksnew.ui.activities
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.tornstocksnew.R
+import com.example.tornstocksnew.databinding.ActivityMainBinding
+import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.models.Stock
+import com.example.tornstocksnew.utils.Constants
+import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
     private lateinit var bottomNavView: BottomNavigationView
     var cachedStocks: MutableList<Stock> = mutableListOf()
+    val mainViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        mainViewModel.loadApiKey()
 
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        bottomNavView = findViewById(R.id.bottom_nav)
+        bottomNavView = binding.bottomNav
         bottomNavView.setupWithNavController(navController)
 
         setupBottomNav()
@@ -95,6 +108,14 @@ class MainActivity : AppCompatActivity() {
             R.id.settingsFragment -> {
                 bottomNavView.selectedItemId = R.id.settings_menu
             }
+        }
+    }
+
+    fun hideBottomNav(bool: Boolean){
+        if (bool){
+            bottomNavView.visibility = View.GONE
+        } else {
+            bottomNavView.visibility = View.VISIBLE
         }
     }
 }

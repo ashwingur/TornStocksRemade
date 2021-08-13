@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TornStocks">
         <activity android:name="com.example.tornstocksnew.ui.activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
