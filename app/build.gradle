@@ -73,4 +73,10 @@ dependencies {
 
     // Livedata
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+
+    // Room Database
+    def room_version = "2.3.0"
+
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }

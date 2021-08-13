@@ -9,7 +9,6 @@ class Repository @Inject constructor(private val apiService: ApiService) {
 
     suspend fun getStocks(key: String) : StocksResponseObject{
         val response = apiService.getStocks(key)
-        Log.d("RESPONSE", "getStocks: $response")
         return apiService.getStocks(key)
     }
 }

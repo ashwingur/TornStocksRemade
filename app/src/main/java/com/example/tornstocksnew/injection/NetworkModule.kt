@@ -1,4 +1,4 @@
-package com.example.tornstocksnew
+package com.example.tornstocksnew.injection
 
 import com.example.tornstocksnew.network.ApiService
 import com.example.tornstocksnew.utils.Constants.Companion.BASE_URL

@@ -64,8 +64,10 @@ class StocksFragment : Fragment() {
         val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object: Runnable {
             override fun run() {
-                getStockData()
-                mainHandler.postDelayed(this, STOCK_UPDATE_DELAY)
+                activity.let {
+                    getStockData()
+                    mainHandler.postDelayed(this, STOCK_UPDATE_DELAY)
+                }
             }
         })
     }

@@ -9,5 +9,6 @@ class Constants {
 
         const val SHARED_PREFS = "SHARED_PREFS"
         const val STORED_KEY = "STORED_KEY"
+        const val DATABASE_NAME = "LOCAL_DATABASE"
     }
 }
