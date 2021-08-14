@@ -2,6 +2,7 @@ package com.example.tornstocksnew.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tornstocksnew.databinding.StocksListItemBinding
@@ -23,6 +24,9 @@ class StocksListAdapter(var stocks: MutableList<Stock>, val context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(stocks[position])
+        holder.itemView.setOnClickListener(View.OnClickListener {
+            listener.onClick(position)
+        })
     }
 
     override fun getItemCount() = stocks.size

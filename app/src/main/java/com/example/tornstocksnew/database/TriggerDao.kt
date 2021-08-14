@@ -12,8 +12,8 @@ interface TriggerDao {
     @Query("SELECT * FROM triggers")
     suspend fun getAllTriggers(): List<Trigger>
 
-//    @Query("SELECT * FROM triggers WHERE stock_id = (stock_id)")
-//    fun getTriggersByStockId(stock_id: Int)
+    @Query("SELECT * FROM triggers WHERE stock_id = :stock_id")
+    fun getTriggersByStockId(stock_id: Int): List<Trigger>
 
     @Insert
     suspend fun insert(trigger: Trigger)

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/stocks_menu_default"
+        android:title="@string/default_view" />
+    <item
+        android:id="@+id/stocks_menu_detailed"
+        android:title="@string/detailed_view" />
+    <item
+        android:id="@+id/stocks_menu_concise"
+        android:title="@string/concise_view" />
+</menu>

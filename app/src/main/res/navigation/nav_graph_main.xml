@@ -11,14 +11,8 @@
         android:label="Stocks"
         tools:layout="@layout/fragment_stocks">
         <action
-            android:id="@+id/action_stocksFragment_to_triggersFragment2"
-            app:destination="@id/triggersFragment" />
-        <action
-            android:id="@+id/action_stocksFragment_to_settingsFragment2"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_stocksFragment_to_userFragment2"
-            app:destination="@id/userFragment" />
+            android:id="@+id/action_stocksFragment_to_createEditTriggerFragment"
+            app:destination="@id/createEditTriggerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -44,4 +38,9 @@
         android:name="com.streamplate.streamplateandroidapp.ui.fragments.ApiKeyFragment"
         android:label="Api Key"
         tools:layout="@layout/fragment_api_key"/>
+    <fragment
+        android:id="@+id/createEditTriggerFragment"
+        android:name="com.streamplate.streamplateandroidapp.ui.fragments.CreateEditTriggerFragment"
+        android:label="Create Trigger"
+        tools:layout="@layout/fragment_create_edit_trigger"/>
 </navigation>

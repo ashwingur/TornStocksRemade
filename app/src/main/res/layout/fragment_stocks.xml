@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/stocks_rv"
-            tools:listitem="@layout/stocks_list_item" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/stocks_menu"
+        android:id="@+id/toolbar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stocks_rv"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/stocks_list_item" />
 
 
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
         android:id="@+id/progress_bar"
-        android:background="@android:color/transparent"/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
-        android:id="@+id/error_tv"
-        android:textColor="@color/text_error"
-        android:text="@string/unable_to_retrieve_stock_data"
         android:layout_centerInParent="true"
         android:background="@android:color/transparent"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/error_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/unable_to_retrieve_stock_data"
+        android:textColor="@color/text_error"
         android:textSize="20sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

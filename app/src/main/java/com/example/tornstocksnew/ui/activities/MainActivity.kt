@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
 
     fun hideBottomNav(bool: Boolean){
         if (bool){
+            Toast.makeText(this, "Hiding bottom nav", Toast.LENGTH_SHORT).show()
             bottomNavView.visibility = View.GONE
         } else {
             bottomNavView.visibility = View.VISIBLE

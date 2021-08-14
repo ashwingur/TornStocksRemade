@@ -13,9 +13,10 @@ import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.FragmentSettingsBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding

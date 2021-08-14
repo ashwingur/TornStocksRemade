@@ -11,24 +11,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.R
-import com.example.tornstocksnew.databinding.FragmentApiKeyBinding
+import com.example.tornstocksnew.databinding.FragmentCreateEditTriggerBinding
 import com.example.tornstocksnew.databinding.FragmentSettingsBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
-import com.example.tornstocksnew.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ApiKeyFragment : Fragment() {
+class CreateEditTriggerFragment : Fragment() {
 
-    private lateinit var binding: FragmentApiKeyBinding
+    private lateinit var binding: FragmentCreateEditTriggerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
-        enterTransition = inflater.inflateTransition(R.transition.slide)
-        exitTransition = inflater.inflateTransition(R.transition.slide)
+        enterTransition = inflater.inflateTransition(R.transition.slide_up)
+        exitTransition = inflater.inflateTransition(R.transition.slide_up)
         (activity as MainActivity).hideBottomNav(true)
     }
 
@@ -37,7 +36,7 @@ class ApiKeyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentApiKeyBinding.inflate(inflater, container, false)
+        binding = FragmentCreateEditTriggerBinding.inflate(inflater, container, false)
         (activity as MainActivity).setSupportActionBar(binding.toolbar)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         return binding.root
@@ -47,15 +46,6 @@ class ApiKeyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         startAnimation(view)
-
-        binding.apply {
-            saveBtn.setOnClickListener {
-                (activity as MainActivity).mainViewModel.saveApiKey(apiKeyEt.text.toString())
-                Toast.makeText(requireContext(), "Api key saved", Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
-            }
-            apiKeyEt.setText(Constants.API_KEY)
-        }
     }
 
     private fun startAnimation(view: View) {
@@ -63,5 +53,7 @@ class ApiKeyFragment : Fragment() {
             startPostponedEnterTransition()
         }
     }
+
+
 
 }

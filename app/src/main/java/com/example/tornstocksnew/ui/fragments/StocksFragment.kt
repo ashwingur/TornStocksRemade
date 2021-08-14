@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import android.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
+import com.example.tornstocksnew.R
 import com.example.tornstocksnew.adapters.StocksListAdapter
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.models.Stock
@@ -22,6 +24,7 @@ import com.example.tornstocksnew.ui.activities.MainActivity
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.Status
 import com.example.tornstocksnew.viewmodels.StocksViewModel
+import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -39,6 +42,7 @@ class StocksFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         TransitionInflater.from(requireContext())
     }
 
@@ -48,6 +52,7 @@ class StocksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentStocksBinding.inflate(inflater, container, false)
+        binding.toolbar.title = "Stocks"
         return binding.root
     }
 
@@ -56,13 +61,32 @@ class StocksFragment : Fragment() {
         postponeEnterTransition()
         startAnimation(view)
 
+        setupToolbar()
         setupRecyclerView()
         setupPeriodicApiCall()
     }
 
+    private fun setupToolbar() {
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.stocks_menu_concise -> {
+                    Toast.makeText(requireContext(), "Concise", Toast.LENGTH_SHORT).show()
+                }
+                R.id.stocks_menu_default -> {
+                    Toast.makeText(requireContext(), "Default", Toast.LENGTH_SHORT).show()
+                }
+                R.id.stocks_menu_detailed -> {
+                    Toast.makeText(requireContext(), "Detailed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            true
+        }
+    }
+
+
     private fun setupPeriodicApiCall() {
         val mainHandler = Handler(Looper.getMainLooper())
-        mainHandler.post(object: Runnable {
+        mainHandler.post(object : Runnable {
             override fun run() {
                 activity.let {
                     getStockData()
@@ -73,7 +97,14 @@ class StocksFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = StocksListAdapter((activity as MainActivity).cachedStocks , requireContext())
+        adapter = StocksListAdapter((activity as MainActivity).cachedStocks, requireContext())
+        adapter.setOnItemClickListener(object : StocksListAdapter.OnItemClickListener{
+            override fun onClick(position: Int) {
+                val bundle = bundleOf()
+                findNavController().navigate(R.id.action_stocksFragment_to_createEditTriggerFragment, bundle)
+            }
+
+        })
         binding.stocksRv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.stocksRv.adapter = adapter
@@ -114,7 +145,8 @@ class StocksFragment : Fragment() {
                 }
             })
         } ?: kotlin.run {
-            Toast.makeText(requireContext(), "Enter an Api key in settings", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Enter an Api key in settings", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -135,3 +167,4 @@ class StocksFragment : Fragment() {
     }
 
 }
+
