@@ -11,10 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.R
+import com.example.tornstocksnew.adapters.CreateEditTriggerFragmentAdapter
 import com.example.tornstocksnew.databinding.FragmentCreateEditTriggerBinding
 import com.example.tornstocksnew.databinding.FragmentSettingsBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -46,12 +48,45 @@ class CreateEditTriggerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         startAnimation(view)
+
+        setupTabLayout()
+    }
+
+    private fun setupTabLayout() {
+
+        val fragmentAdapter = CreateEditTriggerFragmentAdapter(parentFragmentManager, lifecycle)
+        binding.viewPager2.adapter = fragmentAdapter
+
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Basic Trigger"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Basic Trigger"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Basic Trigger"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Basic Trigger"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Basic Trigger"))
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                //binding.viewPager2.currentItem = tab!!.position
+                binding.viewPager2.currentItem = 0
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
     }
 
     private fun startAnimation(view: View) {
         (view.parent as? ViewGroup)?.doOnPreDraw {
             startPostponedEnterTransition()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as MainActivity).hideBottomNav(false)
     }
 
 
