@@ -20,4 +20,7 @@
     <string name="create">Create</string>
     <string name="price">Price</string>
     <string name="delete_after_triggered">Delete after triggered</string>
+    <string name="below">Below</string>
+    <string name="single_use">Single use,</string>
+    <string name="above">Above</string>
 </resources>

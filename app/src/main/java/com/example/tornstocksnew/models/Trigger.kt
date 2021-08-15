@@ -13,11 +13,18 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "triggers")
 @Parcelize
 data class Trigger(
+    var trigger_type: TRIGGER_TYPE,
     val stock_id: Int,
     val name: String,
     val acronym: String,
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     var trigger_price: Float,
-    var single_use: Boolean
+    var single_use: Boolean,
+    val stock_price: Float
 ) : Parcelable
+
+enum class TRIGGER_TYPE {
+    DEFAULT,
+    PERCENTAGE
+}

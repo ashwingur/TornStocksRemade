@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.FragmentBasicTriggerBinding
+import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.TriggerCreator
 import com.streamplate.streamplateandroidapp.ui.fragments.CreateEditTriggerFragment
@@ -33,12 +34,14 @@ class BasicTriggerFragment : Fragment(), TriggerCreator {
         if (binding.triggerPriceEt.text.isNotEmpty()) {
             val stock = (parentFragment as CreateEditTriggerFragment).stock
             return Trigger(
+                TRIGGER_TYPE.DEFAULT,
                 stock?.stock_id!!,
                 stock.name,
                 stock.acronym,
                 0,
                 binding.triggerPriceEt.text.toString().toFloat(),
-                binding.deleteSwitch.isChecked
+                binding.deleteSwitch.isChecked,
+                stock.current_price
             )
         } else {
             Toast.makeText(requireContext(), "Trigger price required", Toast.LENGTH_SHORT).show()
