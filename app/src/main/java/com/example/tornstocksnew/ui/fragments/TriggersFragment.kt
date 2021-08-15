@@ -1,6 +1,5 @@
 package com.streamplate.streamplateandroidapp.ui.fragments
 
-import TriggersListAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,22 +8,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
-import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.databinding.FragmentTriggersBinding
-import com.example.tornstocksnew.models.TRIGGER_TYPE
-import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.ui.activities.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import com.example.tornstocksnew.adapters.TriggersListAdapter
+import com.example.tornstocksnew.models.TRIGGER_TYPE
 
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class TriggersFragment : Fragment() {
 
     private lateinit var binding: FragmentTriggersBinding
-    private var adapter: TriggersListAdapter? = null
+    private lateinit var adapter: TriggersListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +46,14 @@ class TriggersFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-//        adapter = TriggersListAdapter(listOf(), requireContext(), TRIGGER_TYPE.DEFAULT)
-//        (activity as MainActivity).mainViewModel.getAllTriggers().observe(viewLifecycleOwner, {
-//            Log.d("DATABASE", "initRecyclerView: ${it}")
-//            adapter.updateTriggers(it)
-//        })
-//        binding.triggerRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        binding.triggerRv.adapter = adapter
-//        Log.d("DATABASE", "Livedata: ${(activity as MainActivity).mainViewModel.getAllTriggers().value}")
+        adapter = TriggersListAdapter(listOf(), requireContext(), TRIGGER_TYPE.DEFAULT)
+        (activity as MainActivity).mainViewModel.getAllTriggers().observe(viewLifecycleOwner, {
+            Log.d("DATABASE", "initRecyclerView: ${it}")
+            adapter.updateTriggers(it)
+        })
+        binding.triggerRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.triggerRv.adapter = adapter
+        Log.d("DATABASE", "Livedata: ${(activity as MainActivity).mainViewModel.getAllTriggers().value}")
     }
 
     private fun startAnimation(view: View) {
