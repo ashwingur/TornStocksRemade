@@ -100,7 +100,7 @@ class StocksFragment : Fragment() {
         adapter = StocksListAdapter((activity as MainActivity).cachedStocks, requireContext())
         adapter.setOnItemClickListener(object : StocksListAdapter.OnItemClickListener{
             override fun onClick(position: Int) {
-                val bundle = bundleOf()
+                val bundle = bundleOf(Constants.PARCEL_STOCK to cachedStocks[position])
                 findNavController().navigate(R.id.action_stocksFragment_to_createEditTriggerFragment, bundle)
             }
 

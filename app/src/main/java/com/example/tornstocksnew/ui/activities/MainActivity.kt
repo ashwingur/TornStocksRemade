@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavView = binding.bottomNav
         bottomNavView.setupWithNavController(navController)
 
+        mainViewModel.testDb()
         setupBottomNav()
     }
 

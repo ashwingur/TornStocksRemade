@@ -3,7 +3,6 @@ package com.example.tornstocksnew.viewmodels
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.tornstocksnew.database.LocalDatabase
 import com.example.tornstocksnew.database.TriggerDao
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Constants
@@ -34,11 +33,17 @@ class MainActivityViewModel @Inject constructor(
         Constants.API_KEY = apiKey
     }
 
+    fun insertTrigger(trigger: Trigger){
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                triggerDao.insert(trigger)
+            }
+        }
+    }
+
     fun testDb() {
         GlobalScope.launch {
             withContext(Dispatchers.IO){
-                Log.d("DATABASE", "${triggerDao.getAllTriggers()} ")
-                triggerDao.insert(Trigger(1, "Test stock", "TES", 420))
                 Log.d("DATABASE", "${triggerDao.getAllTriggers()} ")
             }
         }

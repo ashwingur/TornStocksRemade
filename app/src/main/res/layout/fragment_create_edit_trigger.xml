@@ -22,11 +22,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <include
+            layout="@layout/stock_details_card"
+            android:id="@+id/stock_details_card"
             android:layout_height="wrap_content"
-            android:text="JUST SOME FILLER TEXT" />
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="12dp"/>
     </RelativeLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -45,5 +48,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="8dp"
+        android:text="@string/create"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view_pager2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

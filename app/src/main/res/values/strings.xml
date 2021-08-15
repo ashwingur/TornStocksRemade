@@ -15,4 +15,9 @@
     <string name="detailed_view">Detailed view</string>
     <string name="collapsed_view">Collapsed view</string>
     <string name="concise_view">Concise view</string>
+    <string name="stock_name">Stock Name</string>
+    <string name="market_cap">Market cap:</string>
+    <string name="create">Create</string>
+    <string name="price">Price</string>
+    <string name="delete_after_triggered">Delete after triggered</string>
 </resources>
