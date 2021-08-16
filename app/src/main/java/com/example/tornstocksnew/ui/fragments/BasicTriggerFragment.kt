@@ -12,6 +12,7 @@ import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.TriggerCreator
 import com.streamplate.streamplateandroidapp.ui.fragments.CreateEditTriggerFragment
+import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
 
 class BasicTriggerFragment : Fragment(), TriggerCreator {
 
@@ -41,7 +42,8 @@ class BasicTriggerFragment : Fragment(), TriggerCreator {
                 0,
                 binding.triggerPriceEt.text.toString().toFloat(),
                 binding.deleteSwitch.isChecked,
-                stock.current_price
+                stock.current_price,
+                TRIGGER_PAGE_MODE.NORMAL
             )
         } else {
             Toast.makeText(requireContext(), "Trigger price required", Toast.LENGTH_SHORT).show()

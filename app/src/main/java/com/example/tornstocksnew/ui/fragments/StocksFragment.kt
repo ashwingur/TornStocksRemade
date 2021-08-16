@@ -112,7 +112,7 @@ class StocksFragment : Fragment() {
 
     private fun getStockData() {
         Constants.API_KEY?.let {
-            stockViewModel.getStocks(it).observe(requireActivity(), Observer {
+            (activity as MainActivity).mainViewModel.getStocks(it).observe(requireActivity(), Observer {
                 when (it.status) {
                     Status.SUCCESS -> {
                         val response: StocksResponseObject? = it.data

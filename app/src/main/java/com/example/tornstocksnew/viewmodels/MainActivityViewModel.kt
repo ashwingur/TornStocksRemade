@@ -9,6 +9,7 @@ import com.example.tornstocksnew.database.TriggerDao
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.repositories.Repository
 import com.example.tornstocksnew.utils.Constants
+import com.example.tornstocksnew.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -34,25 +35,37 @@ class MainActivityViewModel @Inject constructor(
         Constants.API_KEY = apiKey
     }
 
-    fun insertTrigger(trigger: Trigger){
+    fun insertTrigger(trigger: Trigger) {
         GlobalScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 triggerDao.insert(trigger)
             }
         }
     }
 
-    fun getAllTriggers() = liveData<List<Trigger>>(Dispatchers.IO) {
-        emit(repository.getAllTriggers())
+    fun getAllTriggers() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(repository.getAllTriggers()))
+        } catch (exception: Exception) {
+            emit(Resource.error(exception.message ?: "Error Occurred!", data = null))
+        }
     }
 
-    fun testDb() {
+    fun deleteTrigger(trigger: Trigger){
         GlobalScope.launch {
             withContext(Dispatchers.IO){
-                Log.d("DATABASE", "${triggerDao.getAllTriggers()} ")
+                repository.deleteTrigger(trigger)
             }
         }
+    }
 
-
+    fun getStocks(key: String) = liveData(Dispatchers.IO){
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(data = repository.getStocks(key)))
+        } catch (exception: Exception) {
+            emit(Resource.error(exception.message ?: "Error Occurred!", data = null))
+        }
     }
 }

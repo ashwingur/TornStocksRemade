@@ -6,6 +6,7 @@ import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 
@@ -21,7 +22,8 @@ data class Trigger(
     var id: Int,
     var trigger_price: Float,
     var single_use: Boolean,
-    val stock_price: Float
+    val stock_price: Float,
+    var mode: TRIGGER_PAGE_MODE
 ) : Parcelable
 
 enum class TRIGGER_TYPE {

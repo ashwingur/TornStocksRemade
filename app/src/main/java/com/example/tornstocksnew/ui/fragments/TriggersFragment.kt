@@ -15,6 +15,7 @@ import com.example.tornstocksnew.ui.activities.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.tornstocksnew.adapters.TriggersListAdapter
 import com.example.tornstocksnew.models.TRIGGER_TYPE
+import com.example.tornstocksnew.utils.Status
 
 
 @AndroidEntryPoint
@@ -22,10 +23,10 @@ class TriggersFragment : Fragment() {
 
     private lateinit var binding: FragmentTriggersBinding
     private lateinit var adapter: TriggersListAdapter
+    private var mode: TRIGGER_PAGE_MODE = TRIGGER_PAGE_MODE.NORMAL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val inflater = TransitionInflater.from(requireContext())
     }
 
     override fun onCreateView(
@@ -43,17 +44,76 @@ class TriggersFragment : Fragment() {
         startAnimation(view)
 
         initRecyclerView()
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        binding.apply {
+            cancelBtn.setOnClickListener {
+                adapter.updateAllTriggersMode(TRIGGER_PAGE_MODE.NORMAL)
+                mode = TRIGGER_PAGE_MODE.NORMAL
+                binding.toolbar.visibility = View.GONE
+            }
+            deleteBtn.setOnClickListener {
+                mode = TRIGGER_PAGE_MODE.NORMAL
+                for (trigger in adapter.triggers) {
+                    if (trigger.mode == TRIGGER_PAGE_MODE.DELETE) {
+                        (activity as MainActivity).mainViewModel.deleteTrigger(trigger)
+                    }
+                }
+                observeTriggers()
+                binding.toolbar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun observeTriggers() {
+        (activity as MainActivity).mainViewModel.getAllTriggers().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    it.data?.let { it1 -> adapter.updateTriggers(it1) }
+                    binding.progressBar.visibility = View.GONE
+                }
+                Status.ERROR -> {
+                }
+            }
+
+        })
     }
 
     private fun initRecyclerView() {
         adapter = TriggersListAdapter(listOf(), requireContext(), TRIGGER_TYPE.DEFAULT)
-        (activity as MainActivity).mainViewModel.getAllTriggers().observe(viewLifecycleOwner, {
-            Log.d("DATABASE", "initRecyclerView: ${it}")
-            adapter.updateTriggers(it)
-        })
-        binding.triggerRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        observeTriggers()
+        binding.triggerRv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.triggerRv.adapter = adapter
-        Log.d("DATABASE", "Livedata: ${(activity as MainActivity).mainViewModel.getAllTriggers().value}")
+        Log.d(
+            "DATABASE",
+            "Livedata: ${(activity as MainActivity).mainViewModel.getAllTriggers().value}"
+        )
+        adapter.setOnItemClickListener(object : TriggersListAdapter.OnItemClickListener {
+            override fun onClick(position: Int) {
+                if (mode == TRIGGER_PAGE_MODE.DELETE) {
+                    adapter.toggleTriggerMode(position)
+                } else if (mode == TRIGGER_PAGE_MODE.NORMAL) {
+
+                }
+            }
+
+            override fun onLongClick(position: Int): Boolean {
+                if (mode != TRIGGER_PAGE_MODE.DELETE) {
+                    mode = TRIGGER_PAGE_MODE.DELETE
+                    adapter.updateTriggerMode(position, mode)
+                    binding.toolbar.visibility = View.VISIBLE
+                    return true
+                }
+                return false
+            }
+
+        })
     }
 
     private fun startAnimation(view: View) {
@@ -66,4 +126,9 @@ class TriggersFragment : Fragment() {
         super.onResume()
         (activity as MainActivity).updateBottomNav()
     }
+}
+
+enum class TRIGGER_PAGE_MODE {
+    NORMAL,
+    DELETE
 }

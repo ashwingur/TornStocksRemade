@@ -23,4 +23,6 @@
     <string name="below">Below</string>
     <string name="single_use">Single use,</string>
     <string name="above">Above</string>
+    <string name="unable_to_retrieve_triggers">Unable to retrieve triggers</string>
+    <string name="cancel">Cancel</string>
 </resources>
