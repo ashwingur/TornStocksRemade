@@ -15,6 +15,7 @@ import com.example.tornstocksnew.ui.activities.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.tornstocksnew.adapters.TriggersListAdapter
 import com.example.tornstocksnew.models.TRIGGER_TYPE
+import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Status
 
 
@@ -61,7 +62,8 @@ class TriggersFragment : Fragment() {
                         (activity as MainActivity).mainViewModel.deleteTrigger(trigger)
                     }
                 }
-                observeTriggers()
+
+                initRecyclerView()
                 binding.toolbar.visibility = View.GONE
             }
         }
@@ -74,7 +76,7 @@ class TriggersFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
-                    it.data?.let { it1 -> adapter.updateTriggers(it1) }
+                    it.data?.let { it1 -> adapter.updateTriggers(it1 as MutableList) }
                     binding.progressBar.visibility = View.GONE
                 }
                 Status.ERROR -> {
@@ -85,7 +87,7 @@ class TriggersFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = TriggersListAdapter(listOf(), requireContext(), TRIGGER_TYPE.DEFAULT)
+        adapter = TriggersListAdapter(mutableListOf(), requireContext(), TRIGGER_TYPE.DEFAULT)
         observeTriggers()
         binding.triggerRv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

@@ -3,4 +3,5 @@
     <color name="text_primary">#ababab</color>
     <color name="text_error">#f21616</color>
     <color name="card_background">#292b29</color>
+    <color name="delete_trigger_bg">#FFFFFFFF</color>
 </resources>

@@ -15,4 +15,5 @@
     <color name="text_error">#ba0909</color>
     <color name="settings_line">#ebebeb</color>
     <color name="card_background">#f0fff1</color>
+    <color name="delete_trigger_bg">#046b00</color>
 </resources>

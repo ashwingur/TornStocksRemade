@@ -15,7 +15,7 @@ import com.example.tornstocksnew.models.Trigger
 import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
 
 class TriggersListAdapter(
-    var triggers: List<Trigger>,
+    var triggers: MutableList<Trigger>,
     val context: Context,
     var triggerType: TRIGGER_TYPE,
 ) :
@@ -42,7 +42,7 @@ class TriggersListAdapter(
 
     override fun getItemCount() = triggers.size
 
-    fun updateTriggers(triggers: List<Trigger>) {
+    fun updateTriggers(triggers: MutableList<Trigger>) {
         this.triggers = triggers
         notifyDataSetChanged()
     }
