@@ -18,6 +18,10 @@ class Repository @Inject constructor(private val apiService: ApiService, private
         return db.triggerDao().getAllTriggers()
     }
 
+    suspend fun insertTrigger(trigger: Trigger) {
+        db.triggerDao().insert(trigger)
+    }
+
     suspend fun deleteTrigger(trigger: Trigger){
         db.triggerDao().delete(trigger)
     }

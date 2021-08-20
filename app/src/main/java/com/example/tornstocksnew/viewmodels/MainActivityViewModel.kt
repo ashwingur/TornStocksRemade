@@ -15,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     val sharedPreferences: SharedPreferences,
-    val triggerDao: TriggerDao,
     val repository: Repository
 ) : ViewModel() {
 
@@ -36,19 +35,7 @@ class MainActivityViewModel @Inject constructor(
     fun insertTrigger(trigger: Trigger) {
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
-                triggerDao.insert(trigger)
-            }
-        }
-    }
-
-    fun getAllTriggers(): LiveData<List<Trigger>> {
-        return repository.getAllTriggers()
-    }
-
-    fun deleteTrigger(trigger: Trigger) {
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.deleteTrigger(trigger)
+                repository.insertTrigger(trigger)
             }
         }
     }

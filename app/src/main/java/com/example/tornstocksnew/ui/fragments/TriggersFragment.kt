@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.databinding.FragmentTriggersBinding
@@ -17,6 +18,7 @@ import com.example.tornstocksnew.adapters.TriggersListAdapter
 import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Status
+import com.example.tornstocksnew.viewmodels.TriggersViewModel
 
 
 @AndroidEntryPoint
@@ -25,6 +27,7 @@ class TriggersFragment : Fragment() {
     private lateinit var binding: FragmentTriggersBinding
     private lateinit var adapter: TriggersListAdapter
     private var mode: TRIGGER_PAGE_MODE = TRIGGER_PAGE_MODE.NORMAL
+    private val viewModel: TriggersViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +62,7 @@ class TriggersFragment : Fragment() {
                 mode = TRIGGER_PAGE_MODE.NORMAL
                 for (trigger in adapter.triggers) {
                     if (trigger.mode == TRIGGER_PAGE_MODE.DELETE) {
-                        (activity as MainActivity).mainViewModel.deleteTrigger(trigger)
+                        viewModel.deleteTrigger(trigger)
                     }
                 }
 
@@ -69,7 +72,7 @@ class TriggersFragment : Fragment() {
     }
 
     private fun observeTriggers() {
-        (activity as MainActivity).mainViewModel.getAllTriggers().observe(viewLifecycleOwner, {
+        viewModel.getAllTriggers().observe(viewLifecycleOwner, {
             adapter.updateTriggers(it as MutableList)
         })
     }
