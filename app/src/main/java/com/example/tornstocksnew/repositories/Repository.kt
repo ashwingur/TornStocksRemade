@@ -1,6 +1,7 @@
 package com.example.tornstocksnew.repositories
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.tornstocksnew.database.LocalDatabase
 import com.example.tornstocksnew.models.StocksResponseObject
 import com.example.tornstocksnew.models.Trigger
@@ -13,7 +14,7 @@ class Repository @Inject constructor(private val apiService: ApiService, private
         return apiService.getStocks(key)
     }
 
-    suspend fun getAllTriggers() : List<Trigger> {
+    fun getAllTriggers() : LiveData<List<Trigger>> {
         return db.triggerDao().getAllTriggers()
     }
 

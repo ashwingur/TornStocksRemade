@@ -63,7 +63,6 @@ class TriggersFragment : Fragment() {
                     }
                 }
 
-                initRecyclerView()
                 binding.toolbar.visibility = View.GONE
             }
         }
@@ -71,18 +70,7 @@ class TriggersFragment : Fragment() {
 
     private fun observeTriggers() {
         (activity as MainActivity).mainViewModel.getAllTriggers().observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                Status.SUCCESS -> {
-                    it.data?.let { it1 -> adapter.updateTriggers(it1 as MutableList) }
-                    binding.progressBar.visibility = View.GONE
-                }
-                Status.ERROR -> {
-                }
-            }
-
+            adapter.updateTriggers(it as MutableList)
         })
     }
 
@@ -92,10 +80,6 @@ class TriggersFragment : Fragment() {
         binding.triggerRv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.triggerRv.adapter = adapter
-        Log.d(
-            "DATABASE",
-            "Livedata: ${(activity as MainActivity).mainViewModel.getAllTriggers().value}"
-        )
         adapter.setOnItemClickListener(object : TriggersListAdapter.OnItemClickListener {
             override fun onClick(position: Int) {
                 if (mode == TRIGGER_PAGE_MODE.DELETE) {
@@ -104,7 +88,6 @@ class TriggersFragment : Fragment() {
 
                 }
             }
-
             override fun onLongClick(position: Int): Boolean {
                 if (mode != TRIGGER_PAGE_MODE.DELETE) {
                     mode = TRIGGER_PAGE_MODE.DELETE

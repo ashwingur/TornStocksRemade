@@ -2,9 +2,7 @@ package com.example.tornstocksnew.viewmodels
 
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.tornstocksnew.database.TriggerDao
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.repositories.Repository
@@ -43,24 +41,19 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getAllTriggers() = liveData(Dispatchers.IO) {
-        emit(Resource.loading(null))
-        try {
-            emit(Resource.success(repository.getAllTriggers()))
-        } catch (exception: Exception) {
-            emit(Resource.error(exception.message ?: "Error Occurred!", data = null))
-        }
+    fun getAllTriggers(): LiveData<List<Trigger>> {
+        return repository.getAllTriggers()
     }
 
-    fun deleteTrigger(trigger: Trigger){
+    fun deleteTrigger(trigger: Trigger) {
         GlobalScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 repository.deleteTrigger(trigger)
             }
         }
     }
 
-    fun getStocks(key: String) = liveData(Dispatchers.IO){
+    fun getStocks(key: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))
         try {
             emit(Resource.success(data = repository.getStocks(key)))
