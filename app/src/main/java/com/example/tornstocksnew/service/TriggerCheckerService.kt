@@ -210,7 +210,6 @@ class TriggerCheckerService : LifecycleService() {
         val broadcastIntent = Intent()
         broadcastIntent.setAction("restartService")
         broadcastIntent.setClass(this, Restarter::class.java)
-        Toast.makeText(this, "Sending broadcast", Toast.LENGTH_SHORT).show()
         sendBroadcast(broadcastIntent)
     }
 
