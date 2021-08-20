@@ -1,8 +1,12 @@
 package com.example.tornstocksnew.ui.activities
 
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -15,6 +19,7 @@ import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.ActivityMainBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.models.Stock
+import com.example.tornstocksnew.service.TriggerCheckerService
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +28,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
 
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
@@ -35,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupService()
         mainViewModel.loadApiKey()
 
         val navHostFragment: NavHostFragment =
@@ -45,6 +52,24 @@ class MainActivity : AppCompatActivity() {
         bottomNavView.setupWithNavController(navController)
 
         setupBottomNav()
+    }
+
+    private fun setupService() {
+        val triggerCheckerService = TriggerCheckerService()
+        val serviceIntent = Intent(this, triggerCheckerService.javaClass)
+        if (!isTriggerCheckerServiceRunning(triggerCheckerService.javaClass))
+        startService(serviceIntent)
+    }
+
+    private fun isTriggerCheckerServiceRunning(serviceClass: Class<Any>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service: ActivityManager.RunningServiceInfo in manager.getRunningServices(Integer.MAX_VALUE)){
+            if (serviceClass.name.equals(service.service.className)){
+                Log.d(TAG, "isTriggerCheckerServiceRunning: Running")
+                return true
+            }
+        }
+        return false
     }
 
     private fun setupBottomNav() {
