@@ -17,11 +17,18 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.tornstocksnew.R
+import com.example.tornstocksnew.models.Stock
+import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.repositories.Repository
 import com.example.tornstocksnew.ui.activities.MainActivity
+import com.example.tornstocksnew.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,9 +37,11 @@ class TriggerCheckerService : LifecycleService() {
     private val TAG = "TriggerCheckerService"
 
     private lateinit var mainHandler: Handler
+    private val DELAY = 60000L
     private var reqCodeCounter = 3
     private val test: MutableLiveData<Int> = MutableLiveData(0)
     private lateinit var triggers: LiveData<List<Trigger>>
+    private val stocks: MutableLiveData<List<Stock>> = MutableLiveData()
 
     @Inject
     lateinit var repository: Repository
@@ -46,7 +55,64 @@ class TriggerCheckerService : LifecycleService() {
         }
     }
 
+    private fun observeStocks() {
+        stocks.observe(this, {
+            if (triggers.value != null && stocks.value !== null) {
+                for (trigger in triggers.value!!) {
+                    for (stock in stocks.value!!) {
+                        if (trigger.stock_id == stock.stock_id) {
+                            checkIfTriggerHit(stock, trigger)
+                            break
+                        }
+                    }
+                }
+            }
 
+        })
+    }
+
+    private fun checkIfTriggerHit(stock: Stock, trigger: Trigger) {
+        when (trigger.trigger_type) {
+            TRIGGER_TYPE.DEFAULT -> {
+                if (trigger.trigger_price >= trigger.stock_price && stock.current_price >= trigger.trigger_price) {
+                    // Stock is now above trigger price
+                    showNotification(
+                        this,
+                        "Default trigger hit",
+                        "%s is now above %.2f".format(trigger.acronym, trigger.trigger_price),
+                        Intent(this, MainActivity::class.java),
+                        reqCodeCounter++
+                    )
+                    if (trigger.single_use){
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO){
+                                repository.deleteTrigger(trigger)
+                            }
+                        }
+                    }
+                } else if (trigger.trigger_price < trigger.stock_price && stock.current_price <= trigger.trigger_price) {
+                    // Stock is now below the trigger price
+                    showNotification(
+                        this,
+                        "Default trigger hit",
+                        "%s is now below %.2f".format(trigger.acronym, trigger.trigger_price),
+                        Intent(this, MainActivity::class.java),
+                        reqCodeCounter++
+                    )
+                    if (trigger.single_use){
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO){
+                                repository.deleteTrigger(trigger)
+                            }
+                        }
+                    }
+                }
+            }
+            TRIGGER_TYPE.PERCENTAGE -> {
+
+            }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startMyOwnForeground() {
@@ -78,6 +144,7 @@ class TriggerCheckerService : LifecycleService() {
         super.onStartCommand(intent, flags, startId)
         Log.d(TAG, "onStartCommand: Started")
         triggers = repository.getAllTriggers()
+
         startTask()
         return START_STICKY
     }
@@ -88,13 +155,16 @@ class TriggerCheckerService : LifecycleService() {
         mainHandler.post(object : Runnable {
             override fun run() {
                 Log.d(TAG, "run: YAY")
-                mainHandler.postDelayed(this, 10000)
+                GlobalScope.launch {
+                    withContext(Dispatchers.IO) {
+                        stocks.postValue(Constants.API_KEY?.let { repository.getStocks(it).stocks.values.toMutableList() })
+                    }
+                }
+                mainHandler.postDelayed(this, DELAY)
             }
         })
-
-        triggers.observe(this, {
-            Toast.makeText(this@TriggerCheckerService, "triggers= ${triggers.value}", Toast.LENGTH_SHORT).show()
-        })
+        triggers.observe(this, {})
+        observeStocks()
     }
 
     private fun showNotification(
@@ -144,7 +214,4 @@ class TriggerCheckerService : LifecycleService() {
         sendBroadcast(broadcastIntent)
     }
 
-//    override fun onBind(p0: Intent?): IBinder? {
-//        return null
-//    }
 }
