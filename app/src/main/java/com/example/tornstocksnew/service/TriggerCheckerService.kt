@@ -58,7 +58,6 @@ class TriggerCheckerService : LifecycleService() {
 
     private fun observeStocks() {
         stocks.observe(this, {
-            Toast.makeText(this, "${testCounter++}", Toast.LENGTH_SHORT).show()
             Log.d(
                 TAG,
                 "observeStocks: Counter is $testCounter, triggers value: ${triggers.value}, stocks value: ${stocks.value}"

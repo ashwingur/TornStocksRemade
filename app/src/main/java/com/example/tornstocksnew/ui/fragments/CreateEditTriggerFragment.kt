@@ -90,10 +90,8 @@ class CreateEditTriggerFragment : Fragment() {
         binding.viewPager2.adapter = adapter
 
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Default"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Percentage"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Continuous Trigger"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Test Trigger"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Test Trigger"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Percentage (Soon)"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Continuous Trigger (Soon)"))
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {

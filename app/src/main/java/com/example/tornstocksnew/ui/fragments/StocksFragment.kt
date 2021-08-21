@@ -23,6 +23,7 @@ import com.example.tornstocksnew.models.StocksResponseObject
 import com.example.tornstocksnew.ui.activities.MainActivity
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.Status
+import com.example.tornstocksnew.utils.Utils
 import com.example.tornstocksnew.viewmodels.StocksViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,11 +136,14 @@ class StocksFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
+                        if (!Utils.isNetworkAvailable(requireContext())){
+                            Toast.makeText(requireContext(), "Network connection unavailable", Toast.LENGTH_LONG).show()
+                        }
                         Log.d(TAG, "printStockData: ${it.message}")
                         Toast.makeText(
                             requireContext(),
                             "Error retrieving stock data: ${it.message}",
-                            Toast.LENGTH_SHORT
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
