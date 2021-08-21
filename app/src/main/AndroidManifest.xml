@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".MyApplication"
@@ -13,6 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TornStocks">
+
+        <receiver android:name=".service.Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartService"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.example.tornstocksnew.ui.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -23,7 +33,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.TriggerCheckerService" />
+        <service android:name=".service.TriggerCheckerService"
+            android:enabled="true"/>
     </application>
 
 </manifest>

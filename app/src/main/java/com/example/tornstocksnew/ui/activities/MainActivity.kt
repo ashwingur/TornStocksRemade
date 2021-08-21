@@ -19,6 +19,7 @@ import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.ActivityMainBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.models.Stock
+import com.example.tornstocksnew.service.Restarter
 import com.example.tornstocksnew.service.TriggerCheckerService
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.viewmodels.MainActivityViewModel
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavView: BottomNavigationView
     var cachedStocks: MutableList<Stock> = mutableListOf()
     val mainViewModel: MainActivityViewModel by viewModels()
+
+    private lateinit var serviceIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +59,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupService() {
         val triggerCheckerService = TriggerCheckerService()
-        val serviceIntent = Intent(this, triggerCheckerService.javaClass)
+        serviceIntent = Intent(this, triggerCheckerService.javaClass)
         if (!isTriggerCheckerServiceRunning(triggerCheckerService.javaClass))
         startService(serviceIntent)
     }
+
+//    override fun onDestroy() {
+//        stopService(serviceIntent)
+//        val broadcastIntent = Intent()
+//        broadcastIntent.setAction("restartService")
+//        broadcastIntent.setClass(this, Restarter::class.java)
+//        sendBroadcast(broadcastIntent)
+//        super.onDestroy()
+//    }
 
     private fun isTriggerCheckerServiceRunning(serviceClass: Class<Any>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

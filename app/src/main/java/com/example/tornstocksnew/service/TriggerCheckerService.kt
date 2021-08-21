@@ -39,6 +39,7 @@ class TriggerCheckerService : LifecycleService() {
     private lateinit var mainHandler: Handler
     private val DELAY = 60000L
     private var reqCodeCounter = 3
+    private var testCounter = 0
     private val test: MutableLiveData<Int> = MutableLiveData(0)
     private lateinit var triggers: LiveData<List<Trigger>>
     private val stocks: MutableLiveData<List<Stock>> = MutableLiveData()
@@ -57,10 +58,16 @@ class TriggerCheckerService : LifecycleService() {
 
     private fun observeStocks() {
         stocks.observe(this, {
+            Toast.makeText(this, "${testCounter++}", Toast.LENGTH_SHORT).show()
+            Log.d(
+                TAG,
+                "observeStocks: Counter is $testCounter, triggers value: ${triggers.value}, stocks value: ${stocks.value}"
+            )
             if (triggers.value != null && stocks.value !== null) {
                 for (trigger in triggers.value!!) {
                     for (stock in stocks.value!!) {
                         if (trigger.stock_id == stock.stock_id) {
+                            Log.d(TAG, "observeStocks: Checking stock ${trigger.acronym}")
                             checkIfTriggerHit(stock, trigger)
                             break
                         }
@@ -83,9 +90,10 @@ class TriggerCheckerService : LifecycleService() {
                         Intent(this, MainActivity::class.java),
                         reqCodeCounter++
                     )
-                    if (trigger.single_use){
+                    Log.d(TAG, "checkIfTriggerHit: Hit above trigger for ${trigger.name}")
+                    if (trigger.single_use) {
                         GlobalScope.launch {
-                            withContext(Dispatchers.IO){
+                            withContext(Dispatchers.IO) {
                                 repository.deleteTrigger(trigger)
                             }
                         }
@@ -99,9 +107,10 @@ class TriggerCheckerService : LifecycleService() {
                         Intent(this, MainActivity::class.java),
                         reqCodeCounter++
                     )
-                    if (trigger.single_use){
+                    Log.d(TAG, "checkIfTriggerHit: Hit below trigger for ${trigger.name}")
+                    if (trigger.single_use) {
                         GlobalScope.launch {
-                            withContext(Dispatchers.IO){
+                            withContext(Dispatchers.IO) {
                                 repository.deleteTrigger(trigger)
                             }
                         }
@@ -144,7 +153,7 @@ class TriggerCheckerService : LifecycleService() {
         super.onStartCommand(intent, flags, startId)
         Log.d(TAG, "onStartCommand: Started")
         triggers = repository.getAllTriggers()
-
+        repository.loadApiKey()
         startTask()
         return START_STICKY
     }
