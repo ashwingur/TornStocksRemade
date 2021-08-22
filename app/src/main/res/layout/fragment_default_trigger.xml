@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.BasicTriggerFragment">
+    tools:context=".ui.fragments.DefaultTriggerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="@color/text_primary"
+            android:maxLength="7"
             android:inputType="number|numberDecimal"
             app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent" />

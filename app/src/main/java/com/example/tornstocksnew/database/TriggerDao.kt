@@ -1,10 +1,7 @@
 package com.example.tornstocksnew.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.tornstocksnew.models.Trigger
 
 @Dao
@@ -14,11 +11,14 @@ interface TriggerDao {
     fun getAllTriggers(): LiveData<List<Trigger>>
 
     @Query("SELECT * FROM triggers WHERE stock_id = :stock_id")
-    fun getTriggersByStockId(stock_id: Int): List<Trigger>
+    suspend fun getTriggersByStockId(stock_id: Int): List<Trigger>
 
     @Insert
     suspend fun insert(trigger: Trigger)
 
     @Delete
     suspend fun delete(trigger: Trigger)
+
+    @Update
+    suspend fun updateTrigger(trigger: Trigger)
 }

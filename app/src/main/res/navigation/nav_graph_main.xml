@@ -27,7 +27,11 @@
         android:id="@+id/triggersFragment"
         android:name="com.streamplate.streamplateandroidapp.ui.fragments.TriggersFragment"
         android:label="TriggersFragment"
-        tools:layout="@layout/fragment_triggers"/>
+        tools:layout="@layout/fragment_triggers">
+        <action
+            android:id="@+id/action_triggersFragment_to_createEditTriggerFragment"
+            app:destination="@id/createEditTriggerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userFragment"
         android:name="com.streamplate.streamplateandroidapp.ui.fragments.UserFragment"

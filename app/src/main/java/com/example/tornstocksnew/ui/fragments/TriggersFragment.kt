@@ -6,18 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
+import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.FragmentTriggersBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.tornstocksnew.adapters.TriggersListAdapter
 import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
+import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.Status
+import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.example.tornstocksnew.viewmodels.TriggersViewModel
 
 
@@ -28,6 +33,7 @@ class TriggersFragment : Fragment() {
     private lateinit var adapter: TriggersListAdapter
     private var mode: TRIGGER_PAGE_MODE = TRIGGER_PAGE_MODE.NORMAL
     private val viewModel: TriggersViewModel by viewModels()
+    private lateinit var mainViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +53,8 @@ class TriggersFragment : Fragment() {
         postponeEnterTransition()
         startAnimation(view)
 
+        mainViewModel = (activity as MainActivity).mainViewModel
+
         initRecyclerView()
         setupToolbar()
     }
@@ -65,7 +73,6 @@ class TriggersFragment : Fragment() {
                         viewModel.deleteTrigger(trigger)
                     }
                 }
-
                 binding.toolbar.visibility = View.GONE
             }
         }
@@ -88,7 +95,10 @@ class TriggersFragment : Fragment() {
                 if (mode == TRIGGER_PAGE_MODE.DELETE) {
                     adapter.toggleTriggerMode(position)
                 } else if (mode == TRIGGER_PAGE_MODE.NORMAL) {
-
+                    val trigger: Trigger = adapter.triggers[position]
+                    val bundle = bundleOf(Constants.PARCEL_TRIGGER to trigger,
+                    Constants.PARCEL_STOCK to mainViewModel.getCachedStockById(trigger.stock_id))
+                    findNavController().navigate(R.id.action_triggersFragment_to_createEditTriggerFragment, bundle)
                 }
             }
             override fun onLongClick(position: Int): Boolean {

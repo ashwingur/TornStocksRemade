@@ -214,11 +214,11 @@ class TriggerCheckerService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainHandler.removeCallbacksAndMessages(null)
-        val broadcastIntent = Intent()
-        broadcastIntent.setAction("restartService")
-        broadcastIntent.setClass(this, Restarter::class.java)
-        sendBroadcast(broadcastIntent)
+//        mainHandler.removeCallbacksAndMessages(null)
+//        val broadcastIntent = Intent()
+//        broadcastIntent.setAction("restartService")
+//        broadcastIntent.setClass(this, Restarter::class.java)
+//        sendBroadcast(broadcastIntent)
     }
 
 }

@@ -24,6 +24,7 @@ import com.example.tornstocksnew.ui.activities.MainActivity
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.Status
 import com.example.tornstocksnew.utils.Utils
+import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.example.tornstocksnew.viewmodels.StocksViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +37,7 @@ class StocksFragment : Fragment() {
 
     private lateinit var binding: FragmentStocksBinding
     private val stockViewModel: StocksViewModel by viewModels()
+    private lateinit var mainViewModel: MainActivityViewModel
     private lateinit var adapter: StocksListAdapter
     private var cachedStocks: MutableList<Stock> = mutableListOf()
 
@@ -61,6 +63,8 @@ class StocksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         startAnimation(view)
+
+        mainViewModel = (activity as MainActivity).mainViewModel
 
         setupToolbar()
         setupRecyclerView()
@@ -98,7 +102,7 @@ class StocksFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = StocksListAdapter((activity as MainActivity).cachedStocks, requireContext())
+        adapter = StocksListAdapter(mainViewModel.cachedStocks, requireContext())
         adapter.setOnItemClickListener(object : StocksListAdapter.OnItemClickListener{
             override fun onClick(position: Int) {
                 val bundle = bundleOf(Constants.PARCEL_STOCK to cachedStocks[position])
@@ -167,7 +171,7 @@ class StocksFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        (activity as MainActivity).cachedStocks = cachedStocks
+        mainViewModel.cachedStocks = cachedStocks
     }
 
 }

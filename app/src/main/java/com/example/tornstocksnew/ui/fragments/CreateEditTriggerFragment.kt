@@ -22,7 +22,9 @@ import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.ui.activities.MainActivity
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.TriggerCreator
+import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 
@@ -31,8 +33,10 @@ import java.text.DecimalFormat
 class CreateEditTriggerFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateEditTriggerBinding
-    var stock: Stock? = null
     private lateinit var adapter: CreateEditTriggerFragmentAdapter
+    var stock: Stock? = null
+    private var editTrigger: Trigger? = null
+    private lateinit var mainViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,7 @@ class CreateEditTriggerFragment : Fragment() {
 
         val bundle = arguments
         stock = bundle?.getParcelable(Constants.PARCEL_STOCK)
+        editTrigger = bundle?.getParcelable(Constants.PARCEL_TRIGGER)
     }
 
     override fun onCreateView(
@@ -61,18 +66,36 @@ class CreateEditTriggerFragment : Fragment() {
         postponeEnterTransition()
         startAnimation(view)
 
+        mainViewModel = (activity as MainActivity).mainViewModel
+
         setupStockCard()
         setupTabLayout()
+        setupEditMode()
         setupCreateEditBtn()
+    }
+
+    private fun setupEditMode() {
+        // Do this after setting up tab layout
+        editTrigger?.let {
+            binding.confirmButton.text = "Edit"
+            adapter.setData(it)
+        }
     }
 
     private fun setupCreateEditBtn() {
         binding.confirmButton.setOnClickListener {
             val trigger: Trigger? = (childFragmentManager.findFragmentByTag("f" + binding.viewPager2.currentItem) as? TriggerCreator)?.createTrigger()
             trigger?.let {
-                (activity as MainActivity).mainViewModel.insertTrigger(trigger)
-                Toast.makeText(requireContext(), "Trigger created", Toast.LENGTH_SHORT).show()
+                if (editTrigger == null){
+                    mainViewModel.insertTrigger(it)
+                    Toast.makeText(requireContext(), "Trigger created", Toast.LENGTH_SHORT).show()
+                } else {
+                    mainViewModel.updateTrigger(it)
+                    Toast.makeText(requireContext(), "Trigger edited", Toast.LENGTH_SHORT).show()
+                }
                 findNavController().popBackStack()
+            } ?: kotlin.run {
+                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -85,27 +108,15 @@ class CreateEditTriggerFragment : Fragment() {
     }
 
     private fun setupTabLayout() {
-
         adapter = CreateEditTriggerFragmentAdapter(childFragmentManager, lifecycle)
         binding.viewPager2.adapter = adapter
+        //binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Continuous Trigger (Soon)"))
 
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Default"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Percentage (Soon)"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Continuous Trigger (Soon)"))
+        val tabNames = listOf("Default", "Percentage (Coming Soon)")
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                //binding.viewPager2.currentItem = tab!!.position
-                binding.viewPager2.currentItem = 0
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-        })
+        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
+            tab.text = tabNames[position]
+        }.attach()
     }
 
     private fun startAnimation(view: View) {

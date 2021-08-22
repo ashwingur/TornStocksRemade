@@ -22,7 +22,7 @@ data class Trigger(
     var id: Int,
     var trigger_price: Float,
     var single_use: Boolean,
-    val stock_price: Float,
+    var stock_price: Float,
     var mode: TRIGGER_PAGE_MODE
 ) : Parcelable
 

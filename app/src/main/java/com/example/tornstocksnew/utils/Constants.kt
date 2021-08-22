@@ -12,5 +12,6 @@ class Constants {
         const val DATABASE_NAME = "LOCAL_DATABASE"
 
         const val PARCEL_STOCK = "PARCEL_STOCK"
+        const val PARCEL_TRIGGER = "PARCEL TRIGGER"
     }
 }

@@ -4,4 +4,5 @@ import com.example.tornstocksnew.models.Trigger
 
 interface TriggerCreator {
     fun createTrigger(): Trigger?
+    fun setExistingTriggerData()
 }

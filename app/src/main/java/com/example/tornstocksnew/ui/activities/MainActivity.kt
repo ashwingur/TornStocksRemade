@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
     private lateinit var bottomNavView: BottomNavigationView
-    var cachedStocks: MutableList<Stock> = mutableListOf()
     val mainViewModel: MainActivityViewModel by viewModels()
 
     private lateinit var serviceIntent: Intent
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupService()
+        //setupService()
         mainViewModel.loadApiKey()
 
         val navHostFragment: NavHostFragment =

@@ -32,6 +32,10 @@ class Repository @Inject constructor(
         db.triggerDao().delete(trigger)
     }
 
+    suspend fun updateTrigger(trigger: Trigger){
+        db.triggerDao().updateTrigger(trigger)
+    }
+
     fun loadApiKey() {
         Constants.API_KEY = sharedPreferences.getString(Constants.STORED_KEY, null)
     }

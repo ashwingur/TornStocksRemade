@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.PercentageTriggerFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/trigger_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/percentage"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintBottom_toBottomOf="@id/trigger_price_et" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_after_triggered"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintBottom_toBottomOf="@id/delete_switch"
+            app:layout_constraintTop_toTopOf="@id/delete_switch"
+            android:textColor="@color/text_primary"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/trigger_price_et"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:maxLength="7"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete_switch"
+            android:checked="true"
+            app:layout_constraintTop_toBottomOf="@id/trigger_price_et"
+            app:layout_constraintStart_toEndOf="@id/guideline"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

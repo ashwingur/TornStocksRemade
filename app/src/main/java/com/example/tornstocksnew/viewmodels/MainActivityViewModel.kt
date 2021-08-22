@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.tornstocksnew.database.TriggerDao
+import com.example.tornstocksnew.models.Stock
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.repositories.Repository
 import com.example.tornstocksnew.utils.Constants
@@ -17,6 +18,17 @@ class MainActivityViewModel @Inject constructor(
     val sharedPreferences: SharedPreferences,
     val repository: Repository
 ) : ViewModel() {
+
+    var cachedStocks: MutableList<Stock> = mutableListOf()
+
+    fun getCachedStockById(stockId: Int): Stock? {
+        for (stock in cachedStocks){
+            if (stock.stock_id == stockId){
+                return stock
+            }
+        }
+        return null
+    }
 
     fun loadApiKey() {
         Constants.API_KEY = sharedPreferences.getString(Constants.STORED_KEY, null)
@@ -39,6 +51,15 @@ class MainActivityViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateTrigger(trigger: Trigger) {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateTrigger(trigger)
+            }
+        }
+    }
+
 
     fun getStocks(key: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))

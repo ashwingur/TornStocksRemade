@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TornStocks2.0</string>
+    <string name="app_name">Torn Stocks</string>
     <string name="stocks">Stocks</string>
     <string name="triggers">Triggers</string>
     <string name="profile">Profile</string>
@@ -25,4 +25,5 @@
     <string name="above">Above</string>
     <string name="unable_to_retrieve_triggers">Unable to retrieve triggers</string>
     <string name="cancel">Cancel</string>
+    <string name="percentage">Percentage</string>
 </resources>
