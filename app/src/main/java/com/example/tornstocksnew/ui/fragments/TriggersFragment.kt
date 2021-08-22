@@ -35,10 +35,6 @@ class TriggersFragment : Fragment() {
     private val viewModel: TriggersViewModel by viewModels()
     private lateinit var mainViewModel: MainActivityViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

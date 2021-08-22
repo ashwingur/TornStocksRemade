@@ -16,13 +16,14 @@ import kotlinx.parcelize.Parcelize
 data class Trigger(
     var trigger_type: TRIGGER_TYPE,
     val stock_id: Int,
+    var stock_price: Float,
     val name: String,
     val acronym: String,
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     var trigger_price: Float,
+    var trigger_percentage: Float,
     var single_use: Boolean,
-    var stock_price: Float,
     var mode: TRIGGER_PAGE_MODE
 ) : Parcelable
 

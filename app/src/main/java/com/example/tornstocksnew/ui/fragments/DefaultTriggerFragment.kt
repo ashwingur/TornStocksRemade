@@ -21,7 +21,6 @@ class DefaultTriggerFragment : Fragment(), TriggerCreator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         trigger = arguments?.getParcelable(Constants.PARCEL_TRIGGER)
     }
 
@@ -61,12 +60,13 @@ class DefaultTriggerFragment : Fragment(), TriggerCreator {
             return Trigger(
                 TRIGGER_TYPE.DEFAULT,
                 stock?.stock_id!!,
+                stock.current_price,
                 stock.name,
                 stock.acronym,
                 0,
                 binding.triggerPriceEt.text.toString().toFloat(),
+                0F,
                 binding.deleteSwitch.isChecked,
-                stock.current_price,
                 TRIGGER_PAGE_MODE.NORMAL
             )
         } else {
