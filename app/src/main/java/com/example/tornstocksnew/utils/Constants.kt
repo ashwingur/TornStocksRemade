@@ -9,6 +9,9 @@ class Constants {
 
         const val SHARED_PREFS = "SHARED_PREFS"
         const val STORED_KEY = "STORED_KEY"
+        const val STORED_STOCKS_DISPLAY_PREFERENCE = "STORED_STOCKS_DISPLAY_PREFERENCE"
+        var STOCKS_DISPLAY_PREFERENCE = StocksDisplayPreference.DEFAULT
+
         const val DATABASE_NAME = "LOCAL_DATABASE"
 
         const val PARCEL_STOCK = "PARCEL_STOCK"

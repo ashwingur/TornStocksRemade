@@ -74,7 +74,7 @@ class PercentageTriggerFragment : Fragment(), TriggerCreator {
     }
 
     private fun getTriggerPriceByPercentage(): Float {
-        if (binding.triggerPercentageEt.text.isNotEmpty()){
+        if (binding.triggerPercentageEt.text.isNotEmpty() && binding.triggerPercentageEt.text.toString() != "."){
             if (isPlus) {
                 return stock.current_price * (1 + binding.triggerPercentageEt.text.toString().toFloat() / 100)
             } else {
@@ -109,7 +109,7 @@ class PercentageTriggerFragment : Fragment(), TriggerCreator {
             Toast.makeText(requireContext(), "Trigger percentage cannot be less that -100%", Toast.LENGTH_SHORT).show()
             return null
         }
-        if (binding.triggerPercentageEt.text.isNotEmpty()) {
+        if (binding.triggerPercentageEt.text.isNotEmpty() && binding.triggerPercentageEt.text.toString() != ".") {
             trigger?.let {
                 it.trigger_type = TRIGGER_TYPE.PERCENTAGE
                 it.stock_price = stock.current_price

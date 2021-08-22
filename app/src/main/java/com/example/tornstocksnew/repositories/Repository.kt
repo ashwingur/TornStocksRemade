@@ -8,6 +8,7 @@ import com.example.tornstocksnew.models.StocksResponseObject
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.network.ApiService
 import com.example.tornstocksnew.utils.Constants
+import com.example.tornstocksnew.utils.StocksDisplayPreference
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -38,5 +39,35 @@ class Repository @Inject constructor(
 
     fun loadApiKey() {
         Constants.API_KEY = sharedPreferences.getString(Constants.STORED_KEY, null)
+    }
+
+    fun saveApiKey(apiKey: String) {
+        if (apiKey.isEmpty()) {
+            sharedPreferences.edit().putString(Constants.STORED_KEY, null).apply()
+        } else {
+            sharedPreferences.edit().putString(Constants.STORED_KEY, apiKey).apply()
+        }
+
+        Constants.API_KEY = apiKey
+    }
+
+    fun loadStocksDisplayPreference(){
+        val pref = sharedPreferences.getInt(Constants.STORED_STOCKS_DISPLAY_PREFERENCE, 0)
+        when (pref) {
+            StocksDisplayPreference.DEFAULT.ordinal -> {
+                Constants.STOCKS_DISPLAY_PREFERENCE = StocksDisplayPreference.DEFAULT
+            }
+            StocksDisplayPreference.CONCISE.ordinal -> {
+                Constants.STOCKS_DISPLAY_PREFERENCE = StocksDisplayPreference.CONCISE
+            }
+            StocksDisplayPreference.DETAILED.ordinal -> {
+                Constants.STOCKS_DISPLAY_PREFERENCE = StocksDisplayPreference.DETAILED
+            }
+        }
+    }
+
+    fun saveStocksDisplayPreference(pref: StocksDisplayPreference){
+        Constants.STOCKS_DISPLAY_PREFERENCE = pref
+        sharedPreferences.edit().putInt(Constants.STORED_STOCKS_DISPLAY_PREFERENCE, pref.ordinal).apply()
     }
 }

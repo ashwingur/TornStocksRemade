@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/triggersFragment"
         android:name="com.example.tornstocksnew.ui.fragments.TriggersFragment"
-        android:label="TriggersFragment"
+        android:label="Triggers"
         tools:layout="@layout/fragment_triggers">
         <action
             android:id="@+id/action_triggersFragment_to_createEditTriggerFragment"

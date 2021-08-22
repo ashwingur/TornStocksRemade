@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -71,6 +72,7 @@ class CreateEditTriggerFragment : Fragment() {
 
         mainViewModel = (activity as MainActivity).mainViewModel
 
+
         setupStockCard()
         setupTabLayout()
         setupEditMode()
@@ -96,6 +98,7 @@ class CreateEditTriggerFragment : Fragment() {
                     mainViewModel.updateTrigger(it)
                     Toast.makeText(requireContext(), "Trigger edited", Toast.LENGTH_SHORT).show()
                 }
+                (activity as MainActivity).closeKeyboard()
                 findNavController().popBackStack()
             } ?: kotlin.run {
                 Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
@@ -114,8 +117,8 @@ class CreateEditTriggerFragment : Fragment() {
                 binding.viewPager2.currentItem = index
             }, 500)
         }
-
     }
+
 
     private fun setupStockCard() {
         binding.stockDetailsCard.stockName.text = stock?.name
@@ -146,7 +149,5 @@ class CreateEditTriggerFragment : Fragment() {
         super.onDestroy()
         (activity as MainActivity).hideBottomNav(false)
     }
-
-
 
 }

@@ -35,13 +35,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun saveApiKey(apiKey: String) {
-        if (apiKey.isEmpty()) {
-            sharedPreferences.edit().putString(Constants.STORED_KEY, null).apply()
-        } else {
-            sharedPreferences.edit().putString(Constants.STORED_KEY, apiKey).apply()
-        }
-
-        Constants.API_KEY = apiKey
+        repository.saveApiKey(apiKey)
     }
 
     fun insertTrigger(trigger: Trigger) {

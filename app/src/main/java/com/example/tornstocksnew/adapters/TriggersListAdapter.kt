@@ -9,6 +9,7 @@ import com.example.tornstocksnew.databinding.TriggersListItemBinding
 import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.ui.fragments.TRIGGER_PAGE_MODE
+import kotlin.math.absoluteValue
 
 class TriggersListAdapter(
     var triggers: MutableList<Trigger>,
@@ -104,9 +105,12 @@ class TriggersListAdapter(
                                 "%.2f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
                             } else {
                                 percentageTrigger.percentageTv.text =
-                                    "${trigger.trigger_percentage}%"
+                                    "−${trigger.trigger_percentage.absoluteValue}%"
                                 "%.2f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
                             }
+                        if (!trigger.single_use) {
+                            percentageTrigger.singleUseTv.visibility = View.GONE
+                        }
                     }
                 }
             }

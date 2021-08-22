@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.NavController
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 //        super.onDestroy()
 //    }
 
+
     private fun isTriggerCheckerServiceRunning(serviceClass: Class<Any>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service: ActivityManager.RunningServiceInfo in manager.getRunningServices(Integer.MAX_VALUE)){
@@ -127,6 +129,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             return@setOnItemSelectedListener true
+        }
+    }
+
+    fun closeKeyboard(){
+        val view = currentFocus
+        view?.let {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
