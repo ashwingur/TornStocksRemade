@@ -1,4 +1,4 @@
-package com.streamplate.streamplateandroidapp.ui.fragments
+package com.example.tornstocksnew.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

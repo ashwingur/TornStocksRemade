@@ -30,6 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
 class TriggerCheckerService : LifecycleService() {
@@ -117,7 +118,42 @@ class TriggerCheckerService : LifecycleService() {
                 }
             }
             TRIGGER_TYPE.PERCENTAGE -> {
-
+                val triggerPrice = (1 + trigger.trigger_percentage/100) * trigger.stock_price
+                if (stock.current_price >= triggerPrice && trigger.trigger_percentage >= 0) {
+                    // Stock is now above trigger price
+                    showNotification(
+                        this,
+                        "Percentage trigger hit",
+                        "%s is now %.2f%% above %.2f".format(trigger.acronym, trigger.trigger_percentage, trigger.stock_price),
+                        Intent(this, MainActivity::class.java),
+                        reqCodeCounter++
+                    )
+                    Log.d(TAG, "checkIfTriggerHit: Hit above trigger for ${trigger.name}")
+                    if (trigger.single_use) {
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO) {
+                                repository.deleteTrigger(trigger)
+                            }
+                        }
+                    }
+                } else if (stock.current_price < triggerPrice && trigger.trigger_percentage < 0){
+                    // Stock is now below the trigger price
+                    showNotification(
+                        this,
+                        "Default trigger hit",
+                        "%s is now %.2f%% below %.2f".format(trigger.acronym, trigger.trigger_percentage.absoluteValue, trigger.stock_price),
+                        Intent(this, MainActivity::class.java),
+                        reqCodeCounter++
+                    )
+                    Log.d(TAG, "checkIfTriggerHit: Hit below trigger for ${trigger.name}")
+                    if (trigger.single_use) {
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO) {
+                                repository.deleteTrigger(trigger)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -186,7 +222,7 @@ class TriggerCheckerService : LifecycleService() {
             PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT)
         val CHANNEL_ID = "Trigger Alert"
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.mipmap.ic_app_icon_round)
             .setContentTitle(title)
             .setContentText(message)
             .setAutoCancel(true)
@@ -214,11 +250,11 @@ class TriggerCheckerService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        mainHandler.removeCallbacksAndMessages(null)
-//        val broadcastIntent = Intent()
-//        broadcastIntent.setAction("restartService")
-//        broadcastIntent.setClass(this, Restarter::class.java)
-//        sendBroadcast(broadcastIntent)
+        mainHandler.removeCallbacksAndMessages(null)
+        val broadcastIntent = Intent()
+        broadcastIntent.setAction("restartService")
+        broadcastIntent.setClass(this, Restarter::class.java)
+        sendBroadcast(broadcastIntent)
     }
 
 }

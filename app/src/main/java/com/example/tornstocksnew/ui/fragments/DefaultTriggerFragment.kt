@@ -11,8 +11,6 @@ import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.TriggerCreator
-import com.streamplate.streamplateandroidapp.ui.fragments.CreateEditTriggerFragment
-import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
 
 class DefaultTriggerFragment : Fragment(), TriggerCreator {
 

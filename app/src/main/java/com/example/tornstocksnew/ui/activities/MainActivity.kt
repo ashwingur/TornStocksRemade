@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //setupService()
+        setupService()
         mainViewModel.loadApiKey()
 
         val navHostFragment: NavHostFragment =

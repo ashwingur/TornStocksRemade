@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="12dp">
+
+    <TextView
+        android:id="@+id/acronym_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/aaa"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/acronym_tv"
+        android:background="@null"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/stock_name_here"
+        android:textColor="@color/text_primary" />
+
+    <TextView
+        android:id="@+id/trigger_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+        android:text="@string/_000"
+        android:textColor="@color/text_primary"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/percentage_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/trigger_price_tv"
+        android:layout_alignBottom="@id/trigger_price_tv"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/trigger_price_tv"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:text="@string/below"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/single_use_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/percentage_tv"
+        android:background="@null"
+        android:text="@string/single_use"
+        android:textColor="@color/text_error"
+        android:layout_alignTop="@id/trigger_price_tv"
+        android:layout_alignBottom="@id/trigger_price_tv"
+        android:gravity="center_vertical"
+        android:textSize="14sp" />
+
+</RelativeLayout>

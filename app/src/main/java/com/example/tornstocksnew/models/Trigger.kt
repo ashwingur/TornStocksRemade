@@ -1,13 +1,9 @@
 package com.example.tornstocksnew.models
 
-import android.os.Build
-import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
-import kotlinx.parcelize.Parceler
+import com.example.tornstocksnew.ui.fragments.TRIGGER_PAGE_MODE
 import kotlinx.parcelize.Parcelize
 
 

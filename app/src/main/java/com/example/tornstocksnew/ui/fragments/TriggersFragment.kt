@@ -1,18 +1,15 @@
-package com.streamplate.streamplateandroidapp.ui.fragments
+package com.example.tornstocksnew.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.FragmentTriggersBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
@@ -21,7 +18,6 @@ import com.example.tornstocksnew.adapters.TriggersListAdapter
 import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Constants
-import com.example.tornstocksnew.utils.Status
 import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.example.tornstocksnew.viewmodels.TriggersViewModel
 

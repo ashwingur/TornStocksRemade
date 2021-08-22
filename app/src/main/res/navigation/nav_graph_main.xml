@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/stocksFragment"
-        android:name="com.streamplate.streamplateandroidapp.ui.fragments.StocksFragment"
+        android:name="com.example.tornstocksnew.ui.fragments.StocksFragment"
         android:label="Stocks"
         tools:layout="@layout/fragment_stocks">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/triggersFragment"
-        android:name="com.streamplate.streamplateandroidapp.ui.fragments.TriggersFragment"
+        android:name="com.example.tornstocksnew.ui.fragments.TriggersFragment"
         android:label="TriggersFragment"
         tools:layout="@layout/fragment_triggers">
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.streamplate.streamplateandroidapp.ui.fragments.UserFragment"
+        android:name="com.example.tornstocksnew.ui.fragments.UserFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_user"/>
     <fragment
@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_api_key"/>
     <fragment
         android:id="@+id/createEditTriggerFragment"
-        android:name="com.streamplate.streamplateandroidapp.ui.fragments.CreateEditTriggerFragment"
+        android:name="com.example.tornstocksnew.ui.fragments.CreateEditTriggerFragment"
         android:label="Create Trigger"
         tools:layout="@layout/fragment_create_edit_trigger"/>
 </navigation>

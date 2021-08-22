@@ -1,18 +1,14 @@
 package com.example.tornstocksnew.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.TriggersListItemBinding
-import com.example.tornstocksnew.models.Stock
 import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
-import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
+import com.example.tornstocksnew.ui.fragments.TRIGGER_PAGE_MODE
 
 class TriggersListAdapter(
     var triggers: MutableList<Trigger>,
@@ -47,14 +43,14 @@ class TriggersListAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateTriggerMode(position: Int, mode: TRIGGER_PAGE_MODE){
+    fun updateTriggerMode(position: Int, mode: TRIGGER_PAGE_MODE) {
         triggers[position].mode = mode
         notifyItemChanged(position)
     }
 
-    fun toggleTriggerMode(position: Int){
+    fun toggleTriggerMode(position: Int) {
         triggers[position].let {
-            if (it.mode == TRIGGER_PAGE_MODE.NORMAL){
+            if (it.mode == TRIGGER_PAGE_MODE.NORMAL) {
                 //Toast.makeText(context, "Change to Delete", Toast.LENGTH_SHORT).show()
                 it.mode = TRIGGER_PAGE_MODE.DELETE
             } else {
@@ -65,8 +61,8 @@ class TriggersListAdapter(
         notifyItemChanged(position)
     }
 
-    fun updateAllTriggersMode(mode: TRIGGER_PAGE_MODE){
-        for (trigger in triggers){
+    fun updateAllTriggersMode(mode: TRIGGER_PAGE_MODE) {
+        for (trigger in triggers) {
             trigger.mode = mode
         }
         notifyDataSetChanged()
@@ -77,7 +73,7 @@ class TriggersListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(trigger: Trigger) {
             binding.apply {
-                if (trigger.mode == TRIGGER_PAGE_MODE.DELETE){ // Delete mode, highlight the item
+                if (trigger.mode == TRIGGER_PAGE_MODE.DELETE) { // Delete mode, highlight the item
                     selectedBg.visibility = View.VISIBLE
                 } else {
                     selectedBg.visibility = View.GONE
@@ -96,6 +92,21 @@ class TriggersListAdapter(
                         if (!trigger.single_use) {
                             defaultTrigger.singleUseTv.visibility = View.GONE
                         }
+                    }
+                    TRIGGER_TYPE.PERCENTAGE -> {
+                        percentageTrigger.layout.visibility = View.VISIBLE
+                        percentageTrigger.nameTv.text = trigger.name
+                        percentageTrigger.acronymTv.text = trigger.acronym
+                        percentageTrigger.triggerPriceTv.text =
+                            if (trigger.trigger_percentage >= 0) {
+                                percentageTrigger.percentageTv.text =
+                                    "+${trigger.trigger_percentage}%"
+                                "%.2f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
+                            } else {
+                                percentageTrigger.percentageTv.text =
+                                    "${trigger.trigger_percentage}%"
+                                "%.2f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
+                            }
                     }
                 }
             }

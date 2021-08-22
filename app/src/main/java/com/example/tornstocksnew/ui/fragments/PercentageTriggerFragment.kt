@@ -14,8 +14,6 @@ import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.utils.TriggerCreator
-import com.streamplate.streamplateandroidapp.ui.fragments.CreateEditTriggerFragment
-import com.streamplate.streamplateandroidapp.ui.fragments.TRIGGER_PAGE_MODE
 import kotlin.math.absoluteValue
 
 class PercentageTriggerFragment : Fragment(), TriggerCreator {
@@ -99,11 +97,26 @@ class PercentageTriggerFragment : Fragment(), TriggerCreator {
                 }
             }
         }
-        binding.percentagePriceTv.text = getTriggerPriceByPercentage().toString()
+        binding.percentagePriceTv.text = "%.2f".format(getTriggerPriceByPercentage())
     }
 
     override fun createTrigger(): Trigger? {
+        var percentage = binding.triggerPercentageEt.text.toString().toFloat()
+        if (!isPlus) {
+            percentage *= -1
+        }
+        if (percentage < -100){
+            Toast.makeText(requireContext(), "Trigger percentage cannot be less that -100%", Toast.LENGTH_SHORT).show()
+            return null
+        }
         if (binding.triggerPercentageEt.text.isNotEmpty()) {
+            trigger?.let {
+                it.trigger_type = TRIGGER_TYPE.PERCENTAGE
+                it.stock_price = stock.current_price
+                it.single_use = binding.deleteSwitch.isChecked
+                it.trigger_percentage = percentage
+                return it
+            }
             return Trigger(
                 TRIGGER_TYPE.PERCENTAGE,
                 stock.stock_id,
@@ -112,7 +125,7 @@ class PercentageTriggerFragment : Fragment(), TriggerCreator {
                 stock.acronym,
                 0,
                 0F,
-                binding.triggerPercentageEt.text.toString().toFloat(),
+                percentage,
                 binding.deleteSwitch.isChecked,
                 TRIGGER_PAGE_MODE.NORMAL
             )

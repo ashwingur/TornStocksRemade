@@ -1,4 +1,4 @@
-package com.streamplate.streamplateandroidapp.ui.fragments
+package com.example.tornstocksnew.ui.fragments
 
 import android.os.Bundle
 import android.os.Handler
@@ -6,7 +6,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -26,7 +25,6 @@ import com.example.tornstocksnew.utils.Status
 import com.example.tornstocksnew.utils.Utils
 import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.example.tornstocksnew.viewmodels.StocksViewModel
-import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
