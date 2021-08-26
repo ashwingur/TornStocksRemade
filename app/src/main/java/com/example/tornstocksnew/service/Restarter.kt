@@ -4,14 +4,17 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 
 class Restarter : BroadcastReceiver() {
+
+    private val TAG = "Debugg"
     override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "Broadcast received", Toast.LENGTH_SHORT).show()
+        Log.d(TAG, "onReceive: Received")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context!!.startForegroundService(Intent(context, TriggerCheckerService::class.java))
-            Toast.makeText(context, "Starting foreground service", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "onReceive: Restarting foreground service, context is $context")
         } else {
             context!!.startService(Intent(context, TriggerCheckerService::class.java))
         }

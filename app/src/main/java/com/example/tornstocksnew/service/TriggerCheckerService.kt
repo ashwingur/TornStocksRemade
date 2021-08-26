@@ -35,7 +35,7 @@ import kotlin.math.absoluteValue
 @AndroidEntryPoint
 class TriggerCheckerService : LifecycleService() {
 
-    private val TAG = "TriggerCheckerService"
+    private val TAG = "Debugg"
 
     private lateinit var mainHandler: Handler
     private val DELAY = 60000L
@@ -50,11 +50,13 @@ class TriggerCheckerService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.d(TAG, "onCreate: Created")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startMyOwnForeground()
         } else {
             startForeground(1, Notification())
         }
+
     }
 
     private fun observeStocks() {
@@ -190,7 +192,7 @@ class TriggerCheckerService : LifecycleService() {
         triggers = repository.getAllTriggers()
         repository.loadApiKey()
         startTask()
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     private fun startTask() {
@@ -250,11 +252,13 @@ class TriggerCheckerService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(TAG, "onDestroy: Destroying")
         mainHandler.removeCallbacksAndMessages(null)
         val broadcastIntent = Intent()
         broadcastIntent.setAction("restartService")
-        broadcastIntent.setClass(this, Restarter::class.java)
+        broadcastIntent.setClass(applicationContext, Restarter::class.java)
         sendBroadcast(broadcastIntent)
+
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.tornstocksnew.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.repositories.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ class TriggersViewModel @Inject constructor(val repository: Repository): ViewMod
     }
 
     fun deleteTrigger(trigger: Trigger) {
-        GlobalScope.launch {
+        viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repository.deleteTrigger(trigger)
             }

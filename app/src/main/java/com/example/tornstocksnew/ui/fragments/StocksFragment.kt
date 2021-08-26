@@ -124,13 +124,11 @@ class StocksFragment : Fragment() {
 
 
     private fun setupPeriodicApiCall() {
-        val mainHandler = Handler(Looper.getMainLooper())
-        mainHandler.post(object : Runnable {
-            override fun run() {
-                activity.let {
-                    getStockData()
-                    mainHandler.postDelayed(this, STOCK_UPDATE_DELAY)
-                }
+        // Based on the main activity, so unecessary calls arent made if the stock fragment keeps getting created
+        mainViewModel.refreshStockBool.observe(viewLifecycleOwner , {
+            if (it == true){
+                getStockData()
+                mainViewModel.refreshStockBool.value = false
             }
         })
     }
@@ -164,7 +162,7 @@ class StocksFragment : Fragment() {
 
     private fun getStockData() {
         Constants.API_KEY?.let {
-            (activity as MainActivity).mainViewModel.getStocks(it).observe(requireActivity(), Observer {
+            (activity as? MainActivity)?.mainViewModel?.getStocks(it)?.observe(this, Observer {
                 when (it.status) {
                     Status.SUCCESS -> {
                         val response: StocksResponseObject? = it.data

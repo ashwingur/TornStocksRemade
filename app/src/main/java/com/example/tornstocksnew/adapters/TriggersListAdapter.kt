@@ -1,6 +1,7 @@
 package com.example.tornstocksnew.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,11 +75,15 @@ class TriggersListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(trigger: Trigger) {
             binding.apply {
+                // Must set everything to gone or it will mess up the delete mode selection
+                defaultTrigger.layout.visibility = View.GONE
+                percentageTrigger.layout.visibility = View.GONE
                 if (trigger.mode == TRIGGER_PAGE_MODE.DELETE) { // Delete mode, highlight the item
                     selectedBg.visibility = View.VISIBLE
                 } else {
                     selectedBg.visibility = View.GONE
                 }
+
                 when (trigger.trigger_type) {
                     TRIGGER_TYPE.DEFAULT -> {
                         defaultTrigger.layout.visibility = View.VISIBLE
@@ -113,6 +118,7 @@ class TriggersListAdapter(
                         }
                     }
                 }
+
             }
         }
     }

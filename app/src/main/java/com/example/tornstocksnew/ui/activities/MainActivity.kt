@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -20,17 +22,21 @@ import com.example.tornstocksnew.R
 import com.example.tornstocksnew.databinding.ActivityMainBinding
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.models.Stock
+import com.example.tornstocksnew.models.StocksResponseObject
 import com.example.tornstocksnew.service.Restarter
 import com.example.tornstocksnew.service.TriggerCheckerService
 import com.example.tornstocksnew.utils.Constants
+import com.example.tornstocksnew.utils.Status
+import com.example.tornstocksnew.utils.Utils
 import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity"
+    private val TAG = "Debugg"
 
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
@@ -46,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         setupService()
         mainViewModel.loadApiKey()
+        mainViewModel.refreshStockBoolTask()
 
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -58,13 +65,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupService() {
+        Log.d(TAG, "setupService: Setupserverice")
         val triggerCheckerService = TriggerCheckerService()
         serviceIntent = Intent(this, triggerCheckerService.javaClass)
-        if (!isTriggerCheckerServiceRunning(triggerCheckerService.javaClass))
-        startService(serviceIntent)
+        if (!isTriggerCheckerServiceRunning(triggerCheckerService.javaClass)){
+            startService(serviceIntent)
+        }
     }
 
 //    override fun onDestroy() {
+//        Log.d(TAG, "onDestroy: Destroying activity")
 //        stopService(serviceIntent)
 //        val broadcastIntent = Intent()
 //        broadcastIntent.setAction("restartService")

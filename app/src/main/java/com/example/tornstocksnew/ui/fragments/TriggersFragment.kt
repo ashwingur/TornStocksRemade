@@ -1,6 +1,7 @@
 package com.example.tornstocksnew.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,6 +86,7 @@ class TriggersFragment : Fragment() {
         adapter.setOnItemClickListener(object : TriggersListAdapter.OnItemClickListener {
             override fun onClick(position: Int) {
                 if (mode == TRIGGER_PAGE_MODE.DELETE) {
+                    Log.d("Triggger", "onClick: clicked item $position")
                     adapter.toggleTriggerMode(position)
                 } else if (mode == TRIGGER_PAGE_MODE.NORMAL) {
                     val trigger: Trigger = adapter.triggers[position]
