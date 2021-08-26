@@ -30,4 +30,10 @@
     <string name="minus">−</string>
     <string name="percent">%</string>
     <string name="_0">0</string>
+    <string name="how_to_use_this_app">How to use this app</string>
+    <string name="how_to_use_desc_1">Torn Stocks provides a way to create triggers to help notify you when stocks reach certain prices. Start by entering your api key in the settings. Next, go to the stock page and click on a stock you would like to create a trigger for. There are various types of triggers to choose from. After it has been created you may view it on the triggers page and edit it by tapping on it. Long press on a trigger to delete it.</string>
+    <string name="how_to_use_desc_2">A background process will check your triggers with stock data from the Torn API evey 60 seconds to see if a trigger has been hit. If it has a notification will appear.</string>
+    <string name="how_is_your_api_key_used">How is your API key used?</string>
+    <string name="api_key_use_desc">Your API key will strictly be used to only fetch the relevant stock data. The background proccess makes an api call every 60 seconds. The stocks page will make an api call every 30 seconds to display the stock data. Your API key is stored locally and can be removed by saving an empty API key in the settings.</string>
+    <string name="made_by_uv1">Made by UV1</string>
 </resources>

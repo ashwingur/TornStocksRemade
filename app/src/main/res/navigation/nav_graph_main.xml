@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_apiKeyFragment"
             app:destination="@id/apiKeyFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
     </fragment>
     <fragment
         android:id="@+id/triggersFragment"
@@ -47,4 +50,9 @@
         android:name="com.example.tornstocksnew.ui.fragments.CreateEditTriggerFragment"
         android:label="Create Trigger"
         tools:layout="@layout/fragment_create_edit_trigger"/>
+    <fragment
+        android:id="@+id/helpFragment"
+        tools:layout="@layout/fragment_help"
+        android:name="com.streamplate.streamplateandroidapp.ui.fragments.HelpFragment"
+        android:label="Help" />
 </navigation>

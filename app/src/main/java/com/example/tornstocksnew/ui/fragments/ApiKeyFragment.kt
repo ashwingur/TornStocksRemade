@@ -52,6 +52,7 @@ class ApiKeyFragment : Fragment() {
             saveBtn.setOnClickListener {
                 (activity as MainActivity).mainViewModel.saveApiKey(apiKeyEt.text.toString())
                 Toast.makeText(requireContext(), "Api key saved", Toast.LENGTH_SHORT).show()
+                (activity as MainActivity).mainViewModel.refreshStockBool.value = true
                 findNavController().popBackStack()
             }
             apiKeyEt.setText(Constants.API_KEY)
