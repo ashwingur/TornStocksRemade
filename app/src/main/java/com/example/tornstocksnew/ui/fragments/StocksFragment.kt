@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.example.tornstocksnew.R
 import com.example.tornstocksnew.adapters.ConciseStocksAdapter
+import com.example.tornstocksnew.adapters.DetailedStocksAdapter
 import com.example.tornstocksnew.adapters.StocksListAdapter
 import com.example.tornstocksnew.databinding.FragmentStocksBinding
 import com.example.tornstocksnew.models.Stock
@@ -41,6 +42,7 @@ class StocksFragment : Fragment() {
     private lateinit var mainViewModel: MainActivityViewModel
     private lateinit var defaultAdapter: StocksListAdapter
     private lateinit var conciseAdapter: ConciseStocksAdapter
+    private lateinit var detailedStocksAdapter: DetailedStocksAdapter
 
     private val STOCK_UPDATE_DELAY = 60000L
 
@@ -78,7 +80,7 @@ class StocksFragment : Fragment() {
     private fun setupRecyclerView() {
         when (Constants.STOCKS_DISPLAY_PREFERENCE){
             StocksDisplayPreference.DETAILED -> {
-                setupDefaultRecyclerView()
+                setupDetailedRecyclerView()
             }
             StocksDisplayPreference.CONCISE -> {
                 setupConciseRecyclerView()
@@ -92,7 +94,7 @@ class StocksFragment : Fragment() {
     private fun updateRecyclerViewAdapter(){
         when (Constants.STOCKS_DISPLAY_PREFERENCE){
             StocksDisplayPreference.DETAILED -> {
-                defaultAdapter.updateStocks(mainViewModel.cachedStocks)
+                detailedStocksAdapter.updateStocks(mainViewModel.cachedStocks)
             }
             StocksDisplayPreference.CONCISE -> {
                 conciseAdapter.updateStocks(mainViewModel.cachedStocks)
@@ -114,7 +116,6 @@ class StocksFragment : Fragment() {
                 }
                 R.id.stocks_menu_detailed -> {
                     stockViewModel.saveStocksDisplayPreference(StocksDisplayPreference.DETAILED)
-                    Toast.makeText(requireContext(), "Detailed view currently unavailable", Toast.LENGTH_SHORT).show()
                 }
             }
             setupRecyclerView()
@@ -161,7 +162,20 @@ class StocksFragment : Fragment() {
     }
 
     private fun setupDetailedRecyclerView(){
+        detailedStocksAdapter = DetailedStocksAdapter(mainViewModel.cachedStocks, requireContext())
+        detailedStocksAdapter.setOnItemClickListener(object : DetailedStocksAdapter.OnItemClickListener {
+            override fun onClick(position: Int) {
+                val bundle = bundleOf(Constants.PARCEL_STOCK to mainViewModel.cachedStocks[position])
+                findNavController().navigate(R.id.action_stocksFragment_to_createEditTriggerFragment, bundle)
+            }
 
+            override fun onBenefitClick(position: Int) {
+                // Toggle the bool
+                detailedStocksAdapter.toggleBool(position)
+            }
+        })
+        binding.stocksRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.stocksRv.adapter = detailedStocksAdapter
     }
 
     private fun getStockData() {

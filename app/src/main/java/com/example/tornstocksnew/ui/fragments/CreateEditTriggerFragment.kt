@@ -72,7 +72,6 @@ class CreateEditTriggerFragment : Fragment() {
 
         mainViewModel = (activity as MainActivity).mainViewModel
 
-
         setupStockCard()
         setupTabLayout()
         setupEditMode()
