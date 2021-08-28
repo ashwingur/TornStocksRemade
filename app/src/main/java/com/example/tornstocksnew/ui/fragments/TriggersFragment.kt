@@ -75,7 +75,6 @@ class TriggersFragment : Fragment() {
 
     private fun observeTriggers() {
         viewModel.getAllTriggers().observe(viewLifecycleOwner, {
-            Collections.sort(it, Trigger.AlphabeticalAscendingComparator)
             adapter.updateTriggers(it as MutableList)
         })
     }

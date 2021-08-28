@@ -7,7 +7,7 @@ import com.example.tornstocksnew.models.Trigger
 @Dao
 interface TriggerDao {
 
-    @Query("SELECT * FROM triggers")
+    @Query("SELECT * FROM triggers ORDER BY acronym ASC")
     fun getAllTriggers(): LiveData<List<Trigger>>
 
     @Query("SELECT * FROM triggers WHERE stock_id = :stock_id")
