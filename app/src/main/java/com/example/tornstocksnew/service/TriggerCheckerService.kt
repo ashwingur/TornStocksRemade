@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import com.example.tornstocksnew.R
 import com.example.tornstocksnew.models.Stock
 import com.example.tornstocksnew.models.TRIGGER_TYPE
@@ -81,80 +82,65 @@ class TriggerCheckerService : LifecycleService() {
     }
 
     private fun checkIfTriggerHit(stock: Stock, trigger: Trigger) {
+        var isTriggerHit = false
         when (trigger.trigger_type) {
             TRIGGER_TYPE.DEFAULT -> {
+                var msg = "above"
                 if (trigger.trigger_price >= trigger.stock_price && stock.current_price >= trigger.trigger_price) {
                     // Stock is now above trigger price
-                    showNotification(
-                        this,
-                        "Default trigger hit",
-                        "%s is now above %.2f".format(trigger.acronym, trigger.trigger_price),
-                        Intent(this, MainActivity::class.java),
-                        reqCodeCounter++
-                    )
-                    Log.d(TAG, "checkIfTriggerHit: Hit above trigger for ${trigger.name}")
-                    if (trigger.single_use) {
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                repository.deleteTrigger(trigger)
-                            }
-                        }
-                    }
+                    isTriggerHit = true;
                 } else if (trigger.trigger_price < trigger.stock_price && stock.current_price <= trigger.trigger_price) {
                     // Stock is now below the trigger price
+                    msg = "below"
+                    isTriggerHit = true;
+                }
+                if (isTriggerHit) {
                     showNotification(
                         this,
                         "Default trigger hit",
-                        "%s is now below %.2f".format(trigger.acronym, trigger.trigger_price),
+                        "%s is now %s %.2f".format(trigger.acronym, msg, trigger.trigger_price),
                         Intent(this, MainActivity::class.java),
                         reqCodeCounter++
                     )
-                    Log.d(TAG, "checkIfTriggerHit: Hit below trigger for ${trigger.name}")
-                    if (trigger.single_use) {
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                repository.deleteTrigger(trigger)
+                    Log.d(TAG, "checkIfTriggerHit: Trigger stock price was ${trigger.stock_price}")
+                    if (!trigger.single_use){
+                        trigger.stock_price = stock.current_price;
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO){
+                                repository.updateTrigger(trigger)
                             }
                         }
                     }
+                    Log.d(TAG, "checkIfTriggerHit: Trigger stock price is now ${trigger.stock_price}")
                 }
             }
             TRIGGER_TYPE.PERCENTAGE -> {
+                var msg = "above"
                 val triggerPrice = (1 + trigger.trigger_percentage/100) * trigger.stock_price
                 if (stock.current_price >= triggerPrice && trigger.trigger_percentage >= 0) {
                     // Stock is now above trigger price
+                    isTriggerHit = true;
+                } else if (stock.current_price < triggerPrice && trigger.trigger_percentage < 0){
+                    // Stock is now below the trigger price
+                    msg = "below"
+                    isTriggerHit = true;
+                }
+                if (isTriggerHit) {
                     showNotification(
                         this,
                         "Percentage trigger hit",
-                        "%s is now %.2f%% above %.2f".format(trigger.acronym, trigger.trigger_percentage, trigger.stock_price),
+                        "%s is now %.2f%% %s %.2f".format(trigger.acronym, trigger.trigger_percentage, msg, trigger.stock_price),
                         Intent(this, MainActivity::class.java),
                         reqCodeCounter++
                     )
-                    Log.d(TAG, "checkIfTriggerHit: Hit above trigger for ${trigger.name}")
-                    if (trigger.single_use) {
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                repository.deleteTrigger(trigger)
-                            }
-                        }
-                    }
-                } else if (stock.current_price < triggerPrice && trigger.trigger_percentage < 0){
-                    // Stock is now below the trigger price
-                    showNotification(
-                        this,
-                        "Default trigger hit",
-                        "%s is now %.2f%% below %.2f".format(trigger.acronym, trigger.trigger_percentage.absoluteValue, trigger.stock_price),
-                        Intent(this, MainActivity::class.java),
-                        reqCodeCounter++
-                    )
-                    Log.d(TAG, "checkIfTriggerHit: Hit below trigger for ${trigger.name}")
-                    if (trigger.single_use) {
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                repository.deleteTrigger(trigger)
-                            }
-                        }
-                    }
+                }
+            }
+        }
+        // Delete trigger if it was hit and is a single use
+        if (isTriggerHit && trigger.single_use) {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    repository.deleteTrigger(trigger)
                 }
             }
         }

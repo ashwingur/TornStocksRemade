@@ -90,7 +90,7 @@ class TriggersListAdapter(
                         defaultTrigger.nameTv.text = trigger.name
                         defaultTrigger.acronymTv.text = trigger.acronym
                         defaultTrigger.triggerPriceTv.text = trigger.trigger_price.toString()
-                        if (trigger.trigger_price > trigger.stock_price) {
+                        if (trigger.trigger_price >= trigger.stock_price) {
                             defaultTrigger.aboveBelowTv.text = "Above"
                         } else {
                             defaultTrigger.aboveBelowTv.text = "Below"
@@ -107,11 +107,11 @@ class TriggersListAdapter(
                             if (trigger.trigger_percentage >= 0) {
                                 percentageTrigger.percentageTv.text =
                                     "+${trigger.trigger_percentage}%"
-                                "%.2f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
+                                "%.3f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
                             } else {
                                 percentageTrigger.percentageTv.text =
                                     "−${trigger.trigger_percentage.absoluteValue}%"
-                                "%.2f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
+                                "%.3f".format(trigger.stock_price * (1 + trigger.trigger_percentage / 100))
                             }
                         if (!trigger.single_use) {
                             percentageTrigger.singleUseTv.visibility = View.GONE
