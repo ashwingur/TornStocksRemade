@@ -21,7 +21,14 @@ data class Trigger(
     var trigger_percentage: Float,
     var single_use: Boolean,
     var mode: TRIGGER_PAGE_MODE
-) : Parcelable
+) : Parcelable {
+
+    companion object {
+        val AlphabeticalAscendingComparator = Comparator<Trigger> { t1, t2 ->
+            t1.acronym.compareTo(t2.acronym)
+        }
+    }
+}
 
 enum class TRIGGER_TYPE {
     DEFAULT,

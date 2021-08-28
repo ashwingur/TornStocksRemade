@@ -16,11 +16,13 @@ import com.example.tornstocksnew.databinding.FragmentTriggersBinding
 import com.example.tornstocksnew.ui.activities.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.tornstocksnew.adapters.TriggersListAdapter
+import com.example.tornstocksnew.models.Stock
 import com.example.tornstocksnew.models.TRIGGER_TYPE
 import com.example.tornstocksnew.models.Trigger
 import com.example.tornstocksnew.utils.Constants
 import com.example.tornstocksnew.viewmodels.MainActivityViewModel
 import com.example.tornstocksnew.viewmodels.TriggersViewModel
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -73,6 +75,7 @@ class TriggersFragment : Fragment() {
 
     private fun observeTriggers() {
         viewModel.getAllTriggers().observe(viewLifecycleOwner, {
+            Collections.sort(it, Trigger.AlphabeticalAscendingComparator)
             adapter.updateTriggers(it as MutableList)
         })
     }
