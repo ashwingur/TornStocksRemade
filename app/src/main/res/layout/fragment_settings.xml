@@ -7,68 +7,75 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
         <RelativeLayout
+            android:id="@+id/settings_api_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_api_key"
-            android:paddingVertical="12dp"
-            android:paddingHorizontal="40dp">
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/api_key"
-                app:drawableStartCompat="@drawable/ic_key"
                 android:drawablePadding="20dp"
                 android:fontFamily="@font/roboto_regular"
+                android:text="@string/api_key"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
-                app:drawableTint="@color/text_primary"/>
+                app:drawableStartCompat="@drawable/ic_key"
+                app:drawableTint="@color/text_primary" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_right"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:tint="@color/text_primary"/>
+                android:src="@drawable/ic_right"
+                app:tint="@color/text_primary" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/settings_line"
-            android:layout_marginHorizontal="40dp"/>
+            android:layout_marginHorizontal="40dp"
+            android:background="@color/settings_line" />
 
         <RelativeLayout
+            android:id="@+id/settings_help"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/settings_help"
-            android:paddingVertical="12dp"
-            android:paddingHorizontal="40dp">
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/help"
-                app:drawableStartCompat="@drawable/ic_help"
                 android:drawablePadding="20dp"
                 android:fontFamily="@font/roboto_regular"
+                android:text="@string/help"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
-                app:drawableTint="@color/text_primary"/>
+                app:drawableStartCompat="@drawable/ic_help"
+                app:drawableTint="@color/text_primary" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_right"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:tint="@color/text_primary"/>
+                android:src="@drawable/ic_right"
+                app:tint="@color/text_primary" />
         </RelativeLayout>
     </LinearLayout>
-
 
 
 </RelativeLayout>

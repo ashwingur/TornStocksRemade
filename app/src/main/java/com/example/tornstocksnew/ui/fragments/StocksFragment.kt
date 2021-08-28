@@ -67,7 +67,7 @@ class StocksFragment : Fragment() {
 
         stockViewModel.loadStocksDisplayPreference()
         mainViewModel = (activity as MainActivity).mainViewModel
-
+        (activity as MainActivity).closeKeyboard()
 
         setupToolbar()
         setupRecyclerView()
@@ -160,9 +160,13 @@ class StocksFragment : Fragment() {
         binding.stocksRv.adapter = conciseAdapter
     }
 
+    private fun setupDetailedRecyclerView(){
+
+    }
+
     private fun getStockData() {
         Constants.API_KEY?.let {
-            (activity as? MainActivity)?.mainViewModel?.getStocks(it)?.observe(this, Observer {
+            (activity as? MainActivity)?.mainViewModel?.getStocks(it)?.observe(viewLifecycleOwner, Observer {
                 when (it.status) {
                     Status.SUCCESS -> {
                         val response: StocksResponseObject? = it.data

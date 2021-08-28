@@ -30,7 +30,6 @@ class HelpFragment : Fragment() {
         val inflater = TransitionInflater.from(requireContext())
         enterTransition = inflater.inflateTransition(R.transition.slide)
         exitTransition = inflater.inflateTransition(R.transition.slide)
-        (activity as MainActivity).hideBottomNav(true)
     }
 
     override fun onCreateView(
@@ -41,6 +40,7 @@ class HelpFragment : Fragment() {
         binding = FragmentHelpBinding.inflate(inflater, container, false)
         (activity as MainActivity).setSupportActionBar(binding.toolbar)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+        (activity as MainActivity).hideBottomNav(true)
         return binding.root
     }
 

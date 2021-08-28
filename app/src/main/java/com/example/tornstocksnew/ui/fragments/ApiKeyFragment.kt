@@ -29,7 +29,6 @@ class ApiKeyFragment : Fragment() {
         val inflater = TransitionInflater.from(requireContext())
         enterTransition = inflater.inflateTransition(R.transition.slide)
         exitTransition = inflater.inflateTransition(R.transition.slide)
-        (activity as MainActivity).hideBottomNav(true)
     }
 
     override fun onCreateView(
@@ -40,6 +39,7 @@ class ApiKeyFragment : Fragment() {
         binding = FragmentApiKeyBinding.inflate(inflater, container, false)
         (activity as MainActivity).setSupportActionBar(binding.toolbar)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+        (activity as MainActivity).hideBottomNav(true)
         return binding.root
     }
 
@@ -51,7 +51,12 @@ class ApiKeyFragment : Fragment() {
         binding.apply {
             saveBtn.setOnClickListener {
                 (activity as MainActivity).mainViewModel.saveApiKey(apiKeyEt.text.toString())
-                Toast.makeText(requireContext(), "Api key saved", Toast.LENGTH_SHORT).show()
+                if (apiKeyEt.text.toString().isEmpty()){
+                    Toast.makeText(requireContext(), "Api key removed", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Api key saved", Toast.LENGTH_SHORT).show()
+                }
+
                 (activity as MainActivity).mainViewModel.refreshStockBool.value = true
                 findNavController().popBackStack()
             }
