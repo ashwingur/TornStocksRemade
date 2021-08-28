@@ -44,8 +44,6 @@ class StocksFragment : Fragment() {
     private lateinit var conciseAdapter: ConciseStocksAdapter
     private lateinit var detailedStocksAdapter: DetailedStocksAdapter
 
-    private val STOCK_UPDATE_DELAY = 60000L
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -73,7 +71,6 @@ class StocksFragment : Fragment() {
 
         setupToolbar()
         setupRecyclerView()
-        //setupConciseRecyclerView()
         setupPeriodicApiCall()
     }
 

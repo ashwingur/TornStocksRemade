@@ -31,7 +31,6 @@ class MainActivityViewModel @Inject constructor(
         val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object : Runnable {
             override fun run() {
-                Log.d("DEBUGG", "Refreshing stock bool")
                 refreshStockBool.value = true
                 mainHandler.postDelayed(this, refreshStockDelay)
 
